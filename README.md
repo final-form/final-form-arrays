@@ -31,7 +31,7 @@ import arrayMutators from 'final-form-arrays'
 
 // Create Form
 const form = createForm({
-  mutators: { ...arrayMutators }
+  mutators: { ...arrayMutators },
   onSubmit
 })
 
@@ -45,18 +45,20 @@ const customer = form.mutators.pop('customers')
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Mutators](#mutators)
-  - [`form.mutators.insert(name: string, index:number, value: any) => undefined`](#formmutatorsinsertname-string-indexnumber-value-any--undefined)
-  - [`form.mutators.move(name: string, from: number, to: number) => undefined`](#formmutatorsmovename-string-from-number-to-number--undefined)
-  - [`form.mutators.pop(name: string) => any`](#formmutatorspopname-string--any)
-  - [`form.mutators.push(name: string, value: any) => void`](#formmutatorspushname-string-value-any--void)
-  - [`form.mutators.remove(name: string, index: number) => any`](#formmutatorsremovename-string-index-number--any)
-  - [`form.mutators.shift(name: string) => any`](#formmutatorsshiftname-string--any)
-  - [`form.mutators.swap(name: string, indexA: number, indexB: number) => void`](#formmutatorsswapname-string-indexa-number-indexb-number--void)
-  - [`form.mutators.unshift(name: string, value: any) => void`](#formmutatorsunshiftname-string-value-any--void)
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+* [Mutators](#mutators)
+  * [`form.mutators.insert(name: string, index:number, value: any) => undefined`](#formmutatorsinsertname-string-indexnumber-value-any--undefined)
+  * [`form.mutators.move(name: string, from: number, to: number) => undefined`](#formmutatorsmovename-string-from-number-to-number--undefined)
+  * [`form.mutators.pop(name: string) => any`](#formmutatorspopname-string--any)
+  * [`form.mutators.push(name: string, value: any) => void`](#formmutatorspushname-string-value-any--void)
+  * [`form.mutators.remove(name: string, index: number) => any`](#formmutatorsremovename-string-index-number--any)
+  * [`form.mutators.shift(name: string) => any`](#formmutatorsshiftname-string--any)
+  * [`form.mutators.swap(name: string, indexA: number, indexB: number) => void`](#formmutatorsswapname-string-indexa-number-indexb-number--void)
+  * [`form.mutators.unshift(name: string, value: any) => void`](#formmutatorsunshiftname-string-value-any--void)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
