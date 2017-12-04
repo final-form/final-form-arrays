@@ -1,6 +1,6 @@
 <!--
 
-👋 Hey, thanks for taking an interest in 🏁 Final Form!
+👋 Hey, thanks for taking an interest in 🏁 Final Form Arrays!
 
 -->
 
@@ -20,7 +20,7 @@
 
 ### What's your environment?
 
-<!-- Include 🏁 Final Form version, OS/browser affected, Node version, etc. -->
+<!-- Include 🏁 Final Form Arrays version, 🏁 Final Form version, OS/browser affected, Node version, etc. -->
 
 ### Other information
 
