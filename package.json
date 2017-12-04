@@ -1,6 +1,6 @@
 {
   "name": "final-form-arrays",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Array Mutators for 🏁 Final Form",
   "main": "dist/final-form-arrays.cjs.js",
   "jsnext:main": "dist/final-form-arrays.es.js",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/erikras/final-form-arrays#readme",
   "devDependencies": {
-    "babel-eslint": "^8.0.2",
+    "babel-eslint": "^8.0.3",
     "babel-jest": "^21.2.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
@@ -38,17 +38,17 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
-    "final-form": "1.1.0",
+    "final-form": "^1.2.0",
     "flow": "^0.2.3",
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.60.1",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
-    "lint-staged": "^5.0.0",
+    "lint-staged": "^6.0.0",
     "nps": "^5.7.1",
     "nps-utils": "^1.5.0",
     "prettier": "^1.8.2",
-    "prettier-eslint-cli": "^4.4.0",
-    "rollup": "^0.51.8",
+    "prettier-eslint-cli": "^4.4.2",
+    "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-flow": "^1.1.1",
@@ -57,7 +57,7 @@
     "rollup-plugin-uglify": "^2.0.1"
   },
   "peerDependencies": {
-    "final-form": "1.1.0"
+    "final-form": "1.2.0"
   },
   "lint-staged": {
     "*.{js,json,md,css}": ["prettier --write", "git add"]
