@@ -57,7 +57,7 @@
     "rollup-plugin-uglify": "^2.0.1"
   },
   "peerDependencies": {
-    "final-form": "1.2.0"
+    "final-form": "^1.2.0"
   },
   "lint-staged": {
     "*.{js,json,md,css}": ["prettier --write", "git add"]

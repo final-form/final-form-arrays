@@ -1,5 +1,5 @@
 // @flow
-import { Mutator } from 'final-form'
+import type { Mutator } from 'final-form'
 
 type DefaultType = { [string]: Mutator }
 
