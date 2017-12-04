@@ -16,12 +16,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erikras/final-form-arrays.git"
+    "url": "https://github.com/final-form/final-form-arrays.git"
   },
   "bugs": {
-    "url": "https://github.com/erikras/final-form-arrays/issues"
+    "url": "https://github.com/final-form/final-form-arrays/issues"
   },
-  "homepage": "https://github.com/erikras/final-form-arrays#readme",
+  "homepage": "https://github.com/final-form/final-form-arrays#readme",
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "babel-jest": "^21.2.0",

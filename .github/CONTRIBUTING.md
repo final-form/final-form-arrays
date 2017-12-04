@@ -8,7 +8,7 @@ We are open to, and grateful for, any contributions made by the community.
 ## Reporting issues and asking questions
 
 Before opening an issue, please search the
-[issue tracker](https://github.com/erikras/final-form-arrays/issues) to make
+[issue tracker](https://github.com/final-form/final-form-arrays/issues) to make
 sure your issue hasn’t already been reported.
 
 **We use the issue tracker to keep track of bugs and improvements** to 🏁 Final
@@ -34,8 +34,8 @@ request.**
 It's never a fun experience to have your pull request declined after investing a
 lot of time and effort into a new feature. To avoid this from happening, we
 request that contributors create
-[an issue](https://github.com/erikras/final-form-arrays/issues) to first discuss
-any significant new features.
+[an issue](https://github.com/final-form/final-form-arrays/issues) to first
+discuss any significant new features.
 
 Please try to keep your pull request focused in scope and avoid including
 unrelated commits.
@@ -52,8 +52,8 @@ npm run precommit
 ## Coding standards
 
 Our code formatting rules are defined in
-[.eslintrc](https://github.com/erikras/final-form/blob/master/.eslintrc). You
-can check your code against these standards by running:
+[.eslintrc](https://github.com/final-form/final-form-arrays/blob/master/.eslintrc).
+You can check your code against these standards by running:
 
 ```sh
 npm start lint
