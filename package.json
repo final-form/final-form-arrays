@@ -1,6 +1,6 @@
 {
   "name": "final-form-arrays",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Array Mutators for 🏁 Final Form",
   "main": "dist/final-form-arrays.cjs.js",
   "jsnext:main": "dist/final-form-arrays.es.js",
@@ -58,7 +58,7 @@
     "rollup-plugin-uglify": "^2.0.1"
   },
   "peerDependencies": {
-    "final-form": "^1.2.0"
+    "final-form": ">=1.2.0"
   },
   "lint-staged": {
     "*.{js*,ts,json,md,css}": ["prettier --write", "git add"]
