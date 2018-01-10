@@ -61,7 +61,7 @@
     "final-form": "^1.2.0"
   },
   "lint-staged": {
-    "*.{js,json,md,css}": ["prettier --write", "git add"]
+    "*.{js*,ts,json,md,css}": ["prettier --write", "git add"]
   },
   "bundlesize": [
     {
