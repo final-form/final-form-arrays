@@ -5,6 +5,7 @@
   "main": "dist/final-form-arrays.cjs.js",
   "jsnext:main": "dist/final-form-arrays.es.js",
   "module": "dist/final-form-arrays.es.js",
+  "typings": "dist/index.d.js",
   "files": ["dist"],
   "scripts": {
     "start": "nps",
