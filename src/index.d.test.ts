@@ -12,7 +12,7 @@ const form = createForm({
 })
 
 // Get form.mutators (default as object) and cast to Mutators
-const mutators: Mutators = ((form.mutators || {}) as any) as Mutators
+const mutators: Mutators = (form.mutators as any) as Mutators
 
 mutators.insert('customers', 0, { firstName: '', lastName: '' })
 mutators.move('customers', 0, 1)
