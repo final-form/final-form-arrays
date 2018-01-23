@@ -1,7 +1,7 @@
 // tslint:disable no-console
 
 import { Config, createForm, AnyObject } from 'final-form'
-import * as arrayMutators from './index'
+import arrayMutators from './index'
 import { Mutators } from './index'
 
 const onSubmit: Config['onSubmit'] = (values, callback) => {}

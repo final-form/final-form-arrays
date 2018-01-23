@@ -9,7 +9,7 @@ export const shift: Mutator
 export const swap: Mutator
 export const unshift: Mutator
 
-interface DefaultType {
+export interface DefaultType {
   insert: Mutator
   move: Mutator
   pop: Mutator
@@ -20,7 +20,8 @@ interface DefaultType {
   unshift: Mutator
 }
 
-export default DefaultType
+declare const d: DefaultType
+export default d
 
 /** The shape of the mutators once final-form has bound them to state */
 export interface Mutators {
