@@ -1,11 +1,30 @@
 import { Mutator } from 'final-form'
 
-type DefaultType = { [key: string]: Mutator }
+export const insert: Mutator
+export const move: Mutator
+export const pop: Mutator
+export const push: Mutator
+export const remove: Mutator
+export const shift: Mutator
+export const swap: Mutator
+export const unshift: Mutator
 
-export default DefaultType
+export interface DefaultType {
+  insert: Mutator
+  move: Mutator
+  pop: Mutator
+  push: Mutator
+  remove: Mutator
+  shift: Mutator
+  swap: Mutator
+  unshift: Mutator
+}
+
+declare const d: DefaultType
+export default d
 
 /** The shape of the mutators once final-form has bound them to state */
-export type Mutators = {
+export interface Mutators {
   insert: (name: string, index: number, value: any) => void
   move: (name: string, from: number, to: number) => void
   pop: (name: string) => any
