@@ -9,6 +9,19 @@ export const shift: Mutator
 export const swap: Mutator
 export const unshift: Mutator
 
+interface DefaultType {
+  insert: Mutator
+  move: Mutator
+  pop: Mutator
+  push: Mutator
+  remove: Mutator
+  shift: Mutator
+  swap: Mutator
+  unshift: Mutator
+}
+
+export default DefaultType
+
 /** The shape of the mutators once final-form has bound them to state */
 export interface Mutators {
   insert: (name: string, index: number, value: any) => void
