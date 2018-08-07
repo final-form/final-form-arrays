@@ -8,6 +8,7 @@ import remove from './remove'
 import shift from './shift'
 import swap from './swap'
 import unshift from './unshift'
+import update from './update'
 
 const mutators: { [string]: Mutator } = {
   insert,
@@ -17,6 +18,7 @@ const mutators: { [string]: Mutator } = {
   remove,
   shift,
   swap,
-  unshift
+  unshift,
+  update
 }
 export default mutators
