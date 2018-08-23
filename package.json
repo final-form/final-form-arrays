@@ -6,14 +6,15 @@
   "jsnext:main": "dist/final-form-arrays.es.js",
   "module": "dist/final-form-arrays.es.js",
   "typings": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "nps",
     "test": "nps test",
     "precommit": "lint-staged && npm start validate"
   },
-  "author":
-    "Erik Rasmussen <rasmussenerik@gmail.com> (http://github.com/erikras)",
+  "author": "Erik Rasmussen <rasmussenerik@gmail.com> (http://github.com/erikras)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "eslint-plugin-react": "^7.5.1",
     "final-form": "^4.0.4",
     "flow-bin": "^0.63.1",
+    "glow": "^1.2.2",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
     "lint-staged": "^6.0.1",
@@ -61,7 +63,13 @@
     "final-form": ">=1.2.0"
   },
   "lint-staged": {
-    "*.{js*,ts*,json,md,css}": ["prettier --write", "git add"]
+    "*.{js*,ts*,json,md,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "bundlesize": [
     {

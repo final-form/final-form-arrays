@@ -8,9 +8,11 @@ const crossEnv = npsUtils.crossEnv
 module.exports = {
   scripts: {
     test: {
-      default: crossEnv('NODE_ENV=test jest --coverage'),
-      update: crossEnv('NODE_ENV=test jest --coverage --updateSnapshot'),
-      watch: crossEnv('NODE_ENV=test jest --watch'),
+      default: crossEnv('NODE_ENV=test jest --env=node --coverage'),
+      update: crossEnv(
+        'NODE_ENV=test jest --env=node --coverage --updateSnapshot'
+      ),
+      watch: crossEnv('NODE_ENV=test jest --env=node --watch'),
       codeCov: crossEnv(
         'cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js'
       ),
@@ -71,7 +73,13 @@ module.exports = {
     validate: {
       description:
         'This runs several scripts to make sure things look good before committing or on clean install',
-      default: concurrent.nps('lint', 'flow', 'typescript', 'build.andTest', 'test')
+      default: concurrent.nps(
+        'lint',
+        'flow',
+        'typescript',
+        'build.andTest',
+        'test'
+      )
     }
   },
   options: {
