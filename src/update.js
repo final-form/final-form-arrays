@@ -1,10 +1,8 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-type Args = [string, number, any]
-
 const update: Mutator = (
-  [name, index, value]: Args,
+  [name, index, value]: any[],
   state: MutableState,
   { changeValue }: Tools
 ) => {
