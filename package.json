@@ -1,6 +1,6 @@
 {
   "name": "final-form-arrays",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Array Mutators for 🏁 Final Form",
   "main": "dist/final-form-arrays.cjs.js",
   "jsnext:main": "dist/final-form-arrays.es.js",
