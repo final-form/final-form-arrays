@@ -7,6 +7,7 @@ export const push: Mutator
 export const remove: Mutator
 export const shift: Mutator
 export const swap: Mutator
+export const update: Mutator
 export const unshift: Mutator
 
 export interface DefaultType {
@@ -17,6 +18,7 @@ export interface DefaultType {
   remove: Mutator
   shift: Mutator
   swap: Mutator
+  update: Mutator
   unshift: Mutator
 }
 
@@ -32,5 +34,6 @@ export interface Mutators {
   remove: (name: string, index: number) => any
   shift: (name: string) => any
   swap: (name: string, indexA: number, indexB: number) => void
+  update: (name: string, index: number, value: any) => void
   unshift: (name: string, value: any) => void
 }
