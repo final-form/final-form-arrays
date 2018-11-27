@@ -254,4 +254,55 @@ describe('swap', () => {
       }
     })
   })
+
+  it('should preserve functions in field state', () => {
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: ['apple', 'banana', 'carrot', 'date']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'Error A',
+          lastFieldState: 'anything',
+          change: () => 'foo[0]'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: true,
+          error: 'Error B',
+          lastFieldState: 'anything',
+          change: () => 'foo[1]'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: false,
+          error: 'Error C',
+          lastFieldState: 'anything',
+          change: () => 'foo[2]'
+        },
+        'foo[3]': {
+          name: 'foo[3]',
+          touched: false,
+          error: 'Error D',
+          lastFieldState: 'anything',
+          change: () => 'foo[3]'
+        }
+      }
+    }
+    swap(['foo', 0, 2], state, { changeValue })
+    expect(state.fields['foo[0]'].change()).toBe('foo[0]')
+    expect(state.fields['foo[1]'].change()).toBe('foo[1]')
+    expect(state.fields['foo[2]'].change()).toBe('foo[2]')
+    expect(state.fields['foo[3]'].change()).toBe('foo[3]')
+  })
 })

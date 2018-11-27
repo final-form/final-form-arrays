@@ -31,32 +31,40 @@ const move: Mutator = (
         // decrement all indices between from and to
         for (let i = from; i < to; i++) {
           const destKey = `${name}[${i}]${suffix}`
-          state.fields[destKey] = {
-            ...state.fields[`${name}[${i + 1}]${suffix}`],
-            name: destKey,
-            lastFieldState: undefined // clearing lastFieldState forces renotification
-          }
+          moveFieldState({
+            destKey,
+            source: state.fields[`${name}[${i + 1}]${suffix}`]
+          })
         }
       } else {
         // moving to a lower index
         // increment all indices between to and from
         for (let i = from; i > to; i--) {
           const destKey = `${name}[${i}]${suffix}`
-          state.fields[destKey] = {
-            ...state.fields[`${name}[${i - 1}]${suffix}`],
-            name: destKey,
-            lastFieldState: undefined // clearing lastFieldState forces renotification
-          }
+          moveFieldState({
+            destKey,
+            source: state.fields[`${name}[${i - 1}]${suffix}`]
+          })
         }
       }
       const toKey = `${name}[${to}]${suffix}`
-      state.fields[toKey] = {
-        ...backup,
-        name: toKey,
-        lastFieldState: undefined // clearing lastFieldState forces renotification
-      }
+      moveFieldState({
+        destKey: toKey,
+        source: backup
+      })
     }
   })
+
+  function moveFieldState({ destKey, source }) {
+    state.fields[destKey] = {
+      ...source,
+      name: destKey,
+      change: state.fields[destKey].change, // prevent functions from being overwritten
+      blur: state.fields[destKey].blur,
+      focus: state.fields[destKey].focus,
+      lastFieldState: undefined // clearing lastFieldState forces renotification
+    }
+  }
 }
 
 export default move
