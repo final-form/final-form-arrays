@@ -29,18 +29,28 @@ const swap: Mutator = (
       const aKey = aPrefix + suffix
       const bKey = bPrefix + suffix
       const fieldA = state.fields[aKey]
-      state.fields[aKey] = {
-        ...state.fields[bKey],
-        name: aKey,
-        lastFieldState: undefined // clearing lastFieldState forces renotification
-      }
-      state.fields[bKey] = {
-        ...fieldA,
-        name: bKey,
-        lastFieldState: undefined // clearing lastFieldState forces renotification
-      }
+
+      moveFieldState({
+        destKey: aKey,
+        source: state.fields[bKey]
+      })
+      moveFieldState({
+        destKey: bKey,
+        source: fieldA
+      })
     }
   })
+
+  function moveFieldState({ destKey, source }) {
+    state.fields[destKey] = {
+      ...source,
+      name: destKey,
+      change: state.fields[destKey].change, // prevent functions from being overwritten
+      blur: state.fields[destKey].blur,
+      focus: state.fields[destKey].focus,
+      lastFieldState: undefined // clearing lastFieldState forces renotification
+    }
+  }
 }
 
 export default swap
