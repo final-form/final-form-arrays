@@ -433,6 +433,64 @@ describe('move', () => {
     })
   })
 
+  it('should move fields with different shapes', () => {
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: [{ dog: 'apple dog', cat: 'apple cat' }, { dog: 'banana dog' }]
+        }
+      },
+      fields: {
+        'foo[0].dog': {
+          name: 'foo[0].dog',
+          touched: true,
+          error: 'Error A Dog'
+        },
+        'foo[0].cat': {
+          name: 'foo[0].cat',
+          touched: false,
+          error: 'Error A Cat'
+        },
+        'foo[1].dog': {
+          name: 'foo[1].dog',
+          touched: true,
+          error: 'Error B Dog'
+        }
+      }
+    }
+    move(['foo', 0, 1], state, { changeValue })
+    expect(state).toEqual({
+      formState: {
+        values: {
+          foo: [{ dog: 'banana dog' }, { dog: 'apple dog', cat: 'apple cat' }]
+        }
+      },
+      fields: {
+        'foo[0].dog': {
+          name: 'foo[0].dog',
+          touched: true,
+          error: 'Error B Dog'
+        },
+        'foo[1].dog': {
+          name: 'foo[1].dog',
+          touched: true,
+          error: 'Error A Dog'
+        },
+        'foo[1].cat': {
+          name: 'foo[1].cat',
+          touched: false,
+          error: 'Error A Cat'
+        }
+      }
+    })
+  })
+
   it('should preserve functions in field state', () => {
     // implementation of changeValue taken directly from Final Form
     const changeValue = (state, name, mutate) => {
