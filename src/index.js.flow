@@ -13,6 +13,7 @@ export type Mutators = {
   pop: (name: string) => any,
   push: (name: string, value: any) => void,
   remove: (name: string, index: number) => any,
+  removeBatch: (name: string, indexes: Array<number>) => any,
   shift: (name: string) => any,
   swap: (name: string, indexA: number, indexB: number) => void,
   update: (name: string, index: number, value: any) => void,

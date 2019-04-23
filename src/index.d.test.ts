@@ -19,6 +19,7 @@ mutators.merge('customers', [{ firstName: '', lastName: '' }, { firstName: '', l
 mutators.move('customers', 0, 1)
 const customer = mutators.pop('customers')
 mutators.push('customers', { firstName: '', lastName: '' })
+mutators.removeBatch('customers', [0])
 const removed = mutators.remove('customers', 0)
 const shifted = mutators.shift('customers')
 mutators.swap('customers', 0, 1)
