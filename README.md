@@ -50,10 +50,12 @@ const customer = form.mutators.pop('customers')
 
 - [Mutators](#mutators)
   - [`form.mutators.insert(name: string, index: number, value: any) => undefined`](#formmutatorsinsertname-string-index-number-value-any--undefined)
+  - [`form.mutators.merge(name: string, value: Array<any>) => void`](#formmutatorsmergename-string-value-arrayany--void)
   - [`form.mutators.move(name: string, from: number, to: number) => undefined`](#formmutatorsmovename-string-from-number-to-number--undefined)
   - [`form.mutators.pop(name: string) => any`](#formmutatorspopname-string--any)
   - [`form.mutators.push(name: string, value: any) => void`](#formmutatorspushname-string-value-any--void)
   - [`form.mutators.remove(name: string, index: number) => any`](#formmutatorsremovename-string-index-number--any)
+  - [`form.mutators.removeBatch(name: string, indexes: Array<number>) => undefined`](#formmutatorsremovebatchname-string-indexes-arraynumber--undefined)
   - [`form.mutators.shift(name: string) => any`](#formmutatorsshiftname-string--any)
   - [`form.mutators.swap(name: string, indexA: number, indexB: number) => void`](#formmutatorsswapname-string-indexa-number-indexb-number--void)
   - [`form.mutators.update(name: string, index: number, value: any) => void`](#formmutatorsupdatename-string-index-number-value-any--void)
@@ -66,6 +68,10 @@ const customer = form.mutators.pop('customers')
 ### `form.mutators.insert(name: string, index: number, value: any) => undefined`
 
 Inserts a value into the specified index of the array field.
+
+### `form.mutators.merge(name: string, value: Array<any>) => void`
+
+Merges an array at the end of the array field.
 
 ### `form.mutators.move(name: string, from: number, to: number) => undefined`
 
@@ -83,6 +89,10 @@ Pushes a value onto the end of an array field.
 
 Removes a value from the specified index of the array field. Returns the removed
 value.
+
+### `form.mutators.removeBatch(name: string, indexes: Array<number>) => undefined`
+
+Removes the values at the specified indexes of the array field.
 
 ### `form.mutators.shift(name: string) => any`
 

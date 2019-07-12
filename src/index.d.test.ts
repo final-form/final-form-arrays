@@ -15,9 +15,11 @@ const form = createForm({
 const mutators: Mutators = (form.mutators as any) as Mutators
 
 mutators.insert('customers', 0, { firstName: '', lastName: '' })
+mutators.merge('customers', [{ firstName: '', lastName: '' }, { firstName: '', lastName: '' }])
 mutators.move('customers', 0, 1)
 const customer = mutators.pop('customers')
 mutators.push('customers', { firstName: '', lastName: '' })
+mutators.removeBatch('customers', [0])
 const removed = mutators.remove('customers', 0)
 const shifted = mutators.shift('customers')
 mutators.swap('customers', 0, 1)
