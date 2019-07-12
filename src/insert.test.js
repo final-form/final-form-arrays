@@ -1,15 +1,53 @@
 import insert from './insert'
+import { getIn, setIn } from 'final-form'
 
 describe('insert', () => {
   const getOp = (index, value) => {
     const changeValue = jest.fn()
-    insert(['foo', index, value], {}, { changeValue })
+    const state = {
+      formState: {
+        values: {
+          foo: ['one', 'two']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'First Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'Second Error'
+        }
+      }
+    }
+    insert(['foo', index, value], state, { changeValue })
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
+    const state = {
+      formState: {
+        values: {
+          foo: ['one', 'two']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'First Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'Second Error'
+        }
+      }
+    }
     const result = insert(['foo', 0, 'bar'], state, { changeValue })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
@@ -34,5 +72,76 @@ describe('insert', () => {
     expect(result).not.toBe(array) // copied
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['a', 'd', 'b', 'c'])
+  })
+
+  it('should increment other field data from the specified index', () => {
+    const array = ['a', 'b', 'c', 'd']
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: array
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: true,
+          error: 'C Error'
+        },
+        'foo[3]': {
+          name: 'foo[3]',
+          touched: false,
+          error: 'D Error'
+        }
+      }
+    }
+    const returnValue = insert(['foo', 1, 'NEWVALUE'], state, { changeValue })
+    expect(returnValue).toBeUndefined()
+    expect(state.formState.values.foo).not.toBe(array) // copied
+    expect(state).toEqual({
+      formState: {
+        values: {
+          foo: ['a', 'NEWVALUE', 'b', 'c', 'd']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[3]': {
+          name: 'foo[3]',
+          touched: true,
+          error: 'C Error'
+        },
+        'foo[4]': {
+          name: 'foo[4]',
+          touched: false,
+          error: 'D Error'
+        }
+      }
+    })
   })
 })

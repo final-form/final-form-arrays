@@ -1,9 +1,28 @@
 import remove from './remove'
+import { getIn, setIn } from 'final-form'
 
 describe('remove', () => {
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
+    const state = {
+      formState: {
+        values: {
+          foo: ['one', 'two']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'First Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'Second Error'
+        }
+      }
+    }
     const result = remove(['foo', 0], state, { changeValue })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
@@ -15,7 +34,15 @@ describe('remove', () => {
 
   it('should treat undefined like an empty array', () => {
     const changeValue = jest.fn()
-    const returnValue = remove(['foo', 1], {}, { changeValue })
+    const state = {
+      formState: {
+        values: {
+          foo: undefined
+        }
+      },
+      fields: {}
+    }
+    const returnValue = remove(['foo', 1], state, { changeValue })
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -25,14 +52,67 @@ describe('remove', () => {
 
   it('should remove value from the specified index, and return it', () => {
     const array = ['a', 'b', 'c', 'd']
-    let result
-    const changeValue = jest.fn((args, state, op) => {
-      result = op(array)
-    })
-    const returnValue = remove(['foo', 1], {}, { changeValue })
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: array
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: true,
+          error: 'C Error'
+        },
+        'foo[3]': {
+          name: 'foo[3]',
+          touched: false,
+          error: 'D Error'
+        }
+      }
+    }
+    const returnValue = remove(['foo', 1], state, { changeValue })
     expect(returnValue).toBe('b')
-    expect(result).not.toBe(array) // copied
-    expect(Array.isArray(result)).toBe(true)
-    expect(result).toEqual(['a', 'c', 'd'])
+    expect(state.formState.values.foo).not.toBe(array) // copied
+    expect(state).toEqual({
+      formState: {
+        values: {
+          foo: ['a', 'c', 'd']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: true,
+          error: 'C Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: false,
+          error: 'D Error'
+        }
+      }
+    })
   })
 })
