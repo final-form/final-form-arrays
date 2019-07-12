@@ -1,15 +1,53 @@
 import unshift from './unshift'
+import { getIn, setIn } from 'final-form'
 
 describe('unshift', () => {
   const getOp = value => {
     const changeValue = jest.fn()
-    unshift(['foo', value], {}, { changeValue })
+    const state = {
+      formState: {
+        values: {
+          foo: ['one', 'two']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'First Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'Second Error'
+        }
+      }
+    }
+    unshift(['foo', value], state, { changeValue })
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
+    const state = {
+      formState: {
+        values: {
+          foo: ['one', 'two']
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'First Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'Second Error'
+        }
+      }
+    }
     const result = unshift(['foo', 'bar'], state, { changeValue })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
@@ -28,9 +66,63 @@ describe('unshift', () => {
   })
 
   it('should insert value to beginning of array', () => {
-    const op = getOp('d')
-    const result = op(['a', 'b', 'c'])
-    expect(Array.isArray(result)).toBe(true)
-    expect(result).toEqual(['d', 'a', 'b', 'c'])
+    const array = ['a', 'b', 'c']
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: array
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: true,
+          error: 'C Error'
+        }
+      }
+    }
+    const returnValue = unshift(['foo', 'NEWVALUE'], state, { changeValue })
+    expect(returnValue).toBeUndefined()
+    expect(state.formState.values.foo).not.toBe(array) // copied
+    expect(state).toEqual({
+      formState: {
+        values: {
+          foo: ['NEWVALUE', 'a', 'b', 'c']
+        }
+      },
+      fields: {
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[3]': {
+          name: 'foo[3]',
+          touched: true,
+          error: 'C Error'
+        }
+      }
+    })
   })
 })
