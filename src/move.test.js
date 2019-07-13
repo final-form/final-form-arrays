@@ -465,7 +465,7 @@ describe('move', () => {
       }
     }
     move(['foo', 0, 1], state, { changeValue })
-    expect(state).toEqual({
+    expect(state).toMatchObject({
       formState: {
         values: {
           foo: [{ dog: 'banana dog' }, { dog: 'apple dog', cat: 'apple cat' }]
