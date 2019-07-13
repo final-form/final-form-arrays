@@ -61,7 +61,8 @@ describe('remove', () => {
     const state = {
       formState: {
         values: {
-          foo: array
+          foo: array,
+          anotherField: 42
         }
       },
       fields: {
@@ -84,6 +85,10 @@ describe('remove', () => {
           name: 'foo[3]',
           touched: false,
           error: 'D Error'
+        },
+        anotherField: {
+          name: 'anotherField',
+          touched: false
         }
       }
     }
@@ -93,7 +98,8 @@ describe('remove', () => {
     expect(state).toEqual({
       formState: {
         values: {
-          foo: ['a', 'c', 'd']
+          foo: ['a', 'c', 'd'],
+          anotherField: 42
         }
       },
       fields: {
@@ -111,6 +117,10 @@ describe('remove', () => {
           name: 'foo[2]',
           touched: false,
           error: 'D Error'
+        },
+        anotherField: {
+          name: 'anotherField',
+          touched: false
         }
       }
     })

@@ -1,7 +1,7 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const merge: Mutator = (
+const concat: Mutator = (
   [name, value]: any[],
   state: MutableState,
   { changeValue }: Tools
@@ -13,4 +13,4 @@ const merge: Mutator = (
   )
 }
 
-export default merge
+export default concat

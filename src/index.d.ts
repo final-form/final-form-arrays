@@ -1,7 +1,7 @@
 import { Mutator } from 'final-form'
 
 export const insert: Mutator
-export const merge: Mutator
+export const concat: Mutator
 export const move: Mutator
 export const pop: Mutator
 export const push: Mutator
@@ -14,7 +14,7 @@ export const unshift: Mutator
 
 export interface DefaultType {
   insert: Mutator
-  merge: Mutator
+  concat: Mutator
   move: Mutator
   pop: Mutator
   push: Mutator
@@ -32,7 +32,7 @@ export default d
 /** The shape of the mutators once final-form has bound them to state */
 export interface Mutators {
   insert: (name: string, index: number, value: any) => void
-  merge: (name: string, value: Array<any>) => void,
+  concat: (name: string, value: Array<any>) => void
   move: (name: string, from: number, to: number) => void
   pop: (name: string) => any
   push: (name: string, value: any) => void
