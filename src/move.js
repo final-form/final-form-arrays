@@ -59,9 +59,12 @@ const move: Mutator = (
     state.fields[destKey] = {
       ...source,
       name: destKey,
-      change: state.fields[destKey].change, // prevent functions from being overwritten
-      blur: state.fields[destKey].blur,
-      focus: state.fields[destKey].focus,
+      // prevent functions from being overwritten
+      // if the state.fields[destKey] does not exist, it will be created
+      // when that field gets registered, with its own change/blur/focus callbacks
+      change: state.fields[destKey] && state.fields[destKey].change,
+      blur: state.fields[destKey] && state.fields[destKey].blur,
+      focus: state.fields[destKey] && state.fields[destKey].focus,
       lastFieldState: undefined // clearing lastFieldState forces renotification
     }
   }
