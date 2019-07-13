@@ -1,15 +1,13 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const push: Mutator = (
+const push: Mutator<any> = (
   [name, value]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): any[] => (array ? [...array, value] : [value])
+  changeValue(state, name, (array: ?(any[])): any[] =>
+    array ? [...array, value] : [value]
   )
 }
 

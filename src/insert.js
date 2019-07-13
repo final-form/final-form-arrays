@@ -1,20 +1,16 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const insert: Mutator = (
+const insert: Mutator<any> = (
   [name, index, value]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): any[] => {
-      const copy = [...(array || [])]
-      copy.splice(index, 0, value)
-      return copy
-    }
-  )
+  changeValue(state, name, (array: ?(any[])): any[] => {
+    const copy = [...(array || [])]
+    copy.splice(index, 0, value)
+    return copy
+  })
 
   // now we have increment any higher indexes
   const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
@@ -28,6 +24,7 @@ const insert: Mutator = (
         const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
         changes[incrementedKey] = state.fields[key]
         changes[incrementedKey].name = incrementedKey
+        changes[incrementedKey].forceUpdate = true
       }
       if (fieldIndex === index) {
         delete state.fields[key]

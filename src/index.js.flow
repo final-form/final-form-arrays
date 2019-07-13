@@ -1,7 +1,7 @@
 // @flow
 import type { Mutator } from 'final-form'
 
-type DefaultType = { [string]: Mutator }
+type DefaultType = { [string]: Mutator<any> }
 
 declare export default DefaultType
 

@@ -1,7 +1,7 @@
 import removeBatch from './removeBatch'
 import { getIn, setIn } from 'final-form'
 
-describe('merge', () => {
+describe('removeBatch', () => {
   const getOp = value => {
     const changeValue = jest.fn()
     const state = {
@@ -76,7 +76,8 @@ describe('merge', () => {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
-          error: 'First Error'
+          error: 'First Error',
+          forceUpdate: true
         }
       }
     })
@@ -131,7 +132,8 @@ describe('merge', () => {
         'foo[0]': {
           name: 'foo[0]',
           touched: false,
-          error: 'Second Error'
+          error: 'Second Error',
+          forceUpdate: true
         }
       }
     })
@@ -225,17 +227,20 @@ describe('merge', () => {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
-          error: 'A Error'
+          error: 'A Error',
+          forceUpdate: true
         },
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
-          error: 'D Error'
+          error: 'D Error',
+          forceUpdate: true
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
-          error: 'E Error'
+          error: 'E Error',
+          forceUpdate: true
         },
         anotherField: {
           name: 'anotherField',

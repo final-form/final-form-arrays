@@ -12,7 +12,7 @@ import swap from './swap'
 import unshift from './unshift'
 import update from './update'
 
-const mutators: { [string]: Mutator } = {
+const mutators: { [string]: Mutator<any> } = {
   insert,
   concat,
   move,

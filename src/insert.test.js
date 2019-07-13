@@ -133,17 +133,20 @@ describe('insert', () => {
         'foo[2]': {
           name: 'foo[2]',
           touched: false,
-          error: 'B Error'
+          error: 'B Error',
+          forceUpdate: true
         },
         'foo[3]': {
           name: 'foo[3]',
           touched: true,
-          error: 'C Error'
+          error: 'C Error',
+          forceUpdate: true
         },
         'foo[4]': {
           name: 'foo[4]',
           touched: false,
-          error: 'D Error'
+          error: 'D Error',
+          forceUpdate: true
         }
       }
     })

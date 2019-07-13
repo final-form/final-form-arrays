@@ -4,10 +4,10 @@ import type { MutableState, Mutator, Tools } from 'final-form'
 const countBelow = (array, value) =>
   array.reduce((count, item) => (item < value ? count + 1 : count), 0)
 
-const removeBatch: Mutator = (
+const removeBatch: Mutator<any> = (
   [name, indexes]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
   const sortedIndexes: number[] = [...indexes]
   sortedIndexes.sort()
@@ -19,25 +19,21 @@ const removeBatch: Mutator = (
   }
 
   let returnValue = []
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): ?(any[]) => {
-      // use original order of indexes for return value
-      returnValue = indexes.map(index => array && array[index])
-      if (!array || !sortedIndexes.length) {
-        return array
-      }
-
-      const copy = [...array]
-      const removed = []
-      sortedIndexes.forEach((index: number) => {
-        copy.splice(index - removed.length, 1)
-        removed.push(array && array[index])
-      })
-      return copy
+  changeValue(state, name, (array: ?(any[])): ?(any[]) => {
+    // use original order of indexes for return value
+    returnValue = indexes.map(index => array && array[index])
+    if (!array || !sortedIndexes.length) {
+      return array
     }
-  )
+
+    const copy = [...array]
+    const removed = []
+    sortedIndexes.forEach((index: number) => {
+      copy.splice(index - removed.length, 1)
+      removed.push(array && array[index])
+    })
+    return copy
+  })
 
   // now we have to remove any subfields for our indexes,
   // and decrement all higher indexes.
@@ -54,6 +50,7 @@ const removeBatch: Mutator = (
           countBelow(sortedIndexes, fieldIndex)}]${tokens[2]}`
         newFields[decrementedKey] = state.fields[key]
         newFields[decrementedKey].name = decrementedKey
+        newFields[decrementedKey].forceUpdate = true
       }
     } else {
       newFields[key] = state.fields[key]
