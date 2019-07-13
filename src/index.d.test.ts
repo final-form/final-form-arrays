@@ -15,7 +15,10 @@ const form = createForm({
 const mutators: Mutators = (form.mutators as any) as Mutators
 
 mutators.insert('customers', 0, { firstName: '', lastName: '' })
-mutators.merge('customers', [{ firstName: '', lastName: '' }, { firstName: '', lastName: '' }])
+mutators.concat('customers', [
+  { firstName: '', lastName: '' },
+  { firstName: '', lastName: '' }
+])
 mutators.move('customers', 0, 1)
 const customer = mutators.pop('customers')
 mutators.push('customers', { firstName: '', lastName: '' })

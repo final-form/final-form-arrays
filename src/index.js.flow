@@ -8,7 +8,7 @@ declare export default DefaultType
 /** The shape of the mutators once final-form has bound them to state */
 export type Mutators = {
   insert: (name: string, index: number, value: any) => void,
-  merge: (name: string, value: Array<any>) => void,
+  concat: (name: string, value: Array<any>) => void,
   move: (name: string, from: number, to: number) => void,
   pop: (name: string) => any,
   push: (name: string, value: any) => void,

@@ -32,7 +32,8 @@ describe('insert', () => {
     const state = {
       formState: {
         values: {
-          foo: ['one', 'two']
+          foo: ['one', 'two'],
+          anotherField: 42
         }
       },
       fields: {
@@ -43,8 +44,11 @@ describe('insert', () => {
         },
         'foo[1]': {
           name: 'foo[1]',
-          touched: false,
-          error: 'Second Error'
+          touched: false
+        },
+        anotherField: {
+          name: 'anotherField',
+          touched: true
         }
       }
     }
