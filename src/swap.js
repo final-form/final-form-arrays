@@ -1,25 +1,21 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const swap: Mutator = (
+const swap: Mutator<any> = (
   [name, indexA, indexB]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
   if (indexA === indexB) {
     return
   }
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): any[] => {
-      const copy = [...(array || [])]
-      const a = copy[indexA]
-      copy[indexA] = copy[indexB]
-      copy[indexB] = a
-      return copy
-    }
-  )
+  changeValue(state, name, (array: ?(any[])): any[] => {
+    const copy = [...(array || [])]
+    const a = copy[indexA]
+    copy[indexA] = copy[indexB]
+    copy[indexB] = a
+    return copy
+  })
   // swap all field state that begin with "name[indexA]" with that under "name[indexB]"
   const aPrefix = `${name}[${indexA}]`
   const bPrefix = `${name}[${indexB}]`

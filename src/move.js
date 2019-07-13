@@ -1,25 +1,21 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const move: Mutator = (
+const move: Mutator<any> = (
   [name, from, to]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
   if (from === to) {
     return
   }
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): any[] => {
-      const copy = [...(array || [])]
-      const value = copy[from]
-      copy.splice(from, 1)
-      copy.splice(to, 0, value)
-      return copy
-    }
-  )
+  changeValue(state, name, (array: ?(any[])): any[] => {
+    const copy = [...(array || [])]
+    const value = copy[from]
+    copy.splice(from, 1)
+    copy.splice(to, 0, value)
+    return copy
+  })
   const fromPrefix = `${name}[${from}]`
   Object.keys(state.fields).forEach(key => {
     if (key.substring(0, fromPrefix.length) === fromPrefix) {
@@ -65,6 +61,7 @@ const move: Mutator = (
       change: state.fields[destKey] && state.fields[destKey].change,
       blur: state.fields[destKey] && state.fields[destKey].blur,
       focus: state.fields[destKey] && state.fields[destKey].focus,
+      forceUpdate: true,
       lastFieldState: undefined // clearing lastFieldState forces renotification
     }
   }

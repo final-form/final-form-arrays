@@ -110,17 +110,20 @@ describe('unshift', () => {
         'foo[1]': {
           name: 'foo[1]',
           touched: true,
-          error: 'A Error'
+          error: 'A Error',
+          forceUpdate: true
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: false,
-          error: 'B Error'
+          error: 'B Error',
+          forceUpdate: true
         },
         'foo[3]': {
           name: 'foo[3]',
           touched: true,
-          error: 'C Error'
+          error: 'C Error',
+          forceUpdate: true
         }
       }
     })

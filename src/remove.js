@@ -1,22 +1,18 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 
-const remove: Mutator = (
+const remove: Mutator<any> = (
   [name, index]: any[],
-  state: MutableState,
-  { changeValue }: Tools
+  state: MutableState<any>,
+  { changeValue }: Tools<any>
 ) => {
   let returnValue
-  changeValue(
-    state,
-    name,
-    (array: ?(any[])): any[] => {
-      const copy = [...(array || [])]
-      returnValue = copy[index]
-      copy.splice(index, 1)
-      return copy
-    }
-  )
+  changeValue(state, name, (array: ?(any[])): any[] => {
+    const copy = [...(array || [])]
+    returnValue = copy[index]
+    copy.splice(index, 1)
+    return copy
+  })
 
   // now we have to remove any subfields for our index,
   // and decrement all higher indexes.
@@ -35,6 +31,7 @@ const remove: Mutator = (
         const decrementedKey = `${name}[${fieldIndex - 1}]${tokens[2]}`
         state.fields[decrementedKey] = backup[key]
         state.fields[decrementedKey].name = decrementedKey
+        state.fields[decrementedKey].forceUpdate = true
       }
     }
   })
