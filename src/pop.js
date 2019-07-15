@@ -7,15 +7,27 @@ const pop: Mutator<any> = (
   { changeValue }: Tools<any>
 ) => {
   let result
+  let removedIndex: ?number
   changeValue(state, name, (array: ?(any[])): ?(any[]) => {
     if (array) {
       if (!array.length) {
         return []
       }
-      result = array[array.length - 1]
-      return array.slice(0, array.length - 1)
+      removedIndex = array.length - 1
+      result = array[removedIndex]
+      return array.slice(0, removedIndex)
     }
   })
+
+  // now we have to remove any subfields for our index,
+  if (removedIndex !== undefined) {
+    const pattern = new RegExp(`^${name}\\[${removedIndex}].*`)
+    Object.keys(state.fields).forEach(key => {
+      if (pattern.test(key)) {
+        delete state.fields[key]
+      }
+    })
+  }
   return result
 }
 
