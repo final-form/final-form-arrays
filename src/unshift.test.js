@@ -4,6 +4,7 @@ import { getIn, setIn } from 'final-form'
 describe('unshift', () => {
   const getOp = value => {
     const changeValue = jest.fn()
+    const resetFieldState = jest.fn()
     const state = {
       formState: {
         values: {
@@ -23,12 +24,13 @@ describe('unshift', () => {
         }
       }
     }
-    unshift(['foo', value], state, { changeValue })
+    unshift(['foo', value], state, { changeValue, resetFieldState })
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
+    const resetFieldState = jest.fn()
     const state = {
       formState: {
         values: {
@@ -48,7 +50,10 @@ describe('unshift', () => {
         }
       }
     }
-    const result = unshift(['foo', 'bar'], state, { changeValue })
+    const result = unshift(['foo', 'bar'], state, {
+      changeValue,
+      resetFieldState
+    })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -72,6 +77,9 @@ describe('unshift', () => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const resetFieldState = name => {
+      state.fields[name].touched = false
     }
     const state = {
       formState: {
@@ -97,7 +105,10 @@ describe('unshift', () => {
         }
       }
     }
-    const returnValue = unshift(['foo', 'NEWVALUE'], state, { changeValue })
+    const returnValue = unshift(['foo', 'NEWVALUE'], state, {
+      changeValue,
+      resetFieldState
+    })
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -107,23 +118,29 @@ describe('unshift', () => {
         }
       },
       fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: false,
+          error: 'A Error',
+          lastFieldState: undefined
+        },
         'foo[1]': {
           name: 'foo[1]',
           touched: true,
           error: 'A Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: false,
           error: 'B Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
           touched: true,
           error: 'C Error',
-          forceUpdate: true
+          lastFieldState: undefined
         }
       }
     })

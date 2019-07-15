@@ -77,7 +77,7 @@ describe('removeBatch', () => {
           name: 'foo[0]',
           touched: true,
           error: 'First Error',
-          forceUpdate: true
+          lastFieldState: undefined
         }
       }
     })
@@ -133,7 +133,7 @@ describe('removeBatch', () => {
           name: 'foo[0]',
           touched: false,
           error: 'Second Error',
-          forceUpdate: true
+          lastFieldState: undefined
         }
       }
     })
@@ -228,19 +228,19 @@ describe('removeBatch', () => {
           name: 'foo[0]',
           touched: true,
           error: 'A Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'D Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
           error: 'E Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         anotherField: {
           name: 'anotherField',

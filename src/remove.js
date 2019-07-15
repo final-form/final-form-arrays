@@ -31,7 +31,7 @@ const remove: Mutator<any> = (
         const decrementedKey = `${name}[${fieldIndex - 1}]${tokens[2]}`
         state.fields[decrementedKey] = backup[key]
         state.fields[decrementedKey].name = decrementedKey
-        state.fields[decrementedKey].forceUpdate = true
+        state.fields[decrementedKey].lastFieldState = undefined
       }
     }
   })

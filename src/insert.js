@@ -4,7 +4,7 @@ import type { MutableState, Mutator, Tools } from 'final-form'
 const insert: Mutator<any> = (
   [name, index, value]: any[],
   state: MutableState<any>,
-  { changeValue }: Tools<any>
+  { changeValue, resetFieldState }: Tools<any>
 ) => {
   changeValue(state, name, (array: ?(any[])): any[] => {
     const copy = [...(array || [])]
@@ -22,12 +22,12 @@ const insert: Mutator<any> = (
       if (fieldIndex >= index) {
         // inc index one higher
         const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
-        changes[incrementedKey] = state.fields[key]
+        changes[incrementedKey] = { ...state.fields[key] } // make copy of field state
         changes[incrementedKey].name = incrementedKey
-        changes[incrementedKey].forceUpdate = true
+        changes[incrementedKey].lastFieldState = undefined
       }
       if (fieldIndex === index) {
-        delete state.fields[key]
+        resetFieldState(key)
       }
     }
   })

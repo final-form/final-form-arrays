@@ -61,7 +61,6 @@ const move: Mutator<any> = (
       change: state.fields[destKey] && state.fields[destKey].change,
       blur: state.fields[destKey] && state.fields[destKey].blur,
       focus: state.fields[destKey] && state.fields[destKey].focus,
-      forceUpdate: true,
       lastFieldState: undefined // clearing lastFieldState forces renotification
     }
   }
