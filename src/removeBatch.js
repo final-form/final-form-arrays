@@ -50,7 +50,7 @@ const removeBatch: Mutator<any> = (
           countBelow(sortedIndexes, fieldIndex)}]${tokens[2]}`
         newFields[decrementedKey] = state.fields[key]
         newFields[decrementedKey].name = decrementedKey
-        newFields[decrementedKey].forceUpdate = true
+        newFields[decrementedKey].lastFieldState = undefined
       }
     } else {
       newFields[key] = state.fields[key]

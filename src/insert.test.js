@@ -4,6 +4,7 @@ import { getIn, setIn } from 'final-form'
 describe('insert', () => {
   const getOp = (index, value) => {
     const changeValue = jest.fn()
+    const resetFieldState = jest.fn()
     const state = {
       formState: {
         values: {
@@ -23,12 +24,13 @@ describe('insert', () => {
         }
       }
     }
-    insert(['foo', index, value], state, { changeValue })
+    insert(['foo', index, value], state, { changeValue, resetFieldState })
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
+    const resetFieldState = jest.fn()
     const state = {
       formState: {
         values: {
@@ -52,7 +54,10 @@ describe('insert', () => {
         }
       }
     }
-    const result = insert(['foo', 0, 'bar'], state, { changeValue })
+    const result = insert(['foo', 0, 'bar'], state, {
+      changeValue,
+      resetFieldState
+    })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -86,6 +91,9 @@ describe('insert', () => {
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
     }
+    const resetFieldState = name => {
+      state.fields[name].touched = false
+    }
     const state = {
       formState: {
         values: {
@@ -100,7 +108,7 @@ describe('insert', () => {
         },
         'foo[1]': {
           name: 'foo[1]',
-          touched: false,
+          touched: true,
           error: 'B Error'
         },
         'foo[2]': {
@@ -115,7 +123,10 @@ describe('insert', () => {
         }
       }
     }
-    const returnValue = insert(['foo', 1, 'NEWVALUE'], state, { changeValue })
+    const returnValue = insert(['foo', 1, 'NEWVALUE'], state, {
+      changeValue,
+      resetFieldState
+    })
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -130,23 +141,29 @@ describe('insert', () => {
           touched: true,
           error: 'A Error'
         },
-        'foo[2]': {
-          name: 'foo[2]',
+        'foo[1]': {
+          name: 'foo[1]',
           touched: false,
           error: 'B Error',
-          forceUpdate: true
+          lastFieldState: undefined
+        },
+        'foo[2]': {
+          name: 'foo[2]',
+          touched: true,
+          error: 'B Error',
+          lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
           touched: true,
           error: 'C Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[4]': {
           name: 'foo[4]',
           touched: false,
           error: 'D Error',
-          forceUpdate: true
+          lastFieldState: undefined
         }
       }
     })

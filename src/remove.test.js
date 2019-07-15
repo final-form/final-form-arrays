@@ -112,13 +112,13 @@ describe('remove', () => {
           name: 'foo[1]',
           touched: true,
           error: 'C Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: false,
           error: 'D Error',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         anotherField: {
           name: 'anotherField',

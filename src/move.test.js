@@ -97,22 +97,19 @@ describe('move', () => {
           name: 'foo[0]',
           touched: true,
           error: 'Error B',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'Error C',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
           error: 'Error A',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
@@ -176,22 +173,19 @@ describe('move', () => {
           name: 'foo[0]',
           touched: false,
           error: 'Error C',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1]': {
           name: 'foo[1]',
           touched: true,
           error: 'Error A',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
           error: 'Error B',
-          lastFieldState: undefined,
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
@@ -281,7 +275,7 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error B Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[0].cat': {
           name: 'foo[0].cat',
@@ -302,13 +296,13 @@ describe('move', () => {
           name: 'foo[2].dog',
           touched: true,
           error: 'Error A Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2].cat': {
           name: 'foo[2].cat',
           touched: false,
           error: 'Error A Cat',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[3].dog': {
           name: 'foo[3].dog',
@@ -402,13 +396,13 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error C Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[0].cat': {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error C Cat',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1].dog': {
           name: 'foo[1].dog',
@@ -424,13 +418,13 @@ describe('move', () => {
           name: 'foo[2].dog',
           touched: true,
           error: 'Error B Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[2].cat': {
           name: 'foo[2].cat',
           touched: true,
           error: 'Error B Cat',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[3].dog': {
           name: 'foo[3].dog',
@@ -489,19 +483,19 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error B Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error A Dog',
-          forceUpdate: true
+          lastFieldState: undefined
         },
         'foo[1].cat': {
           name: 'foo[1].cat',
           touched: false,
           error: 'Error A Cat',
-          forceUpdate: true
+          lastFieldState: undefined
         }
       }
     })
