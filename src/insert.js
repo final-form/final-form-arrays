@@ -1,5 +1,6 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
+import moveFieldState from './moveFieldState'
 
 const insert: Mutator<any> = (
   [name, index, value]: any[],
@@ -14,7 +15,7 @@ const insert: Mutator<any> = (
 
   // now we have increment any higher indexes
   const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
-  const changes = {}
+  const backup = { ...state.fields }
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
@@ -22,16 +23,13 @@ const insert: Mutator<any> = (
       if (fieldIndex >= index) {
         // inc index one higher
         const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
-        changes[incrementedKey] = { ...state.fields[key] } // make copy of field state
-        changes[incrementedKey].name = incrementedKey
-        changes[incrementedKey].lastFieldState = undefined
+        moveFieldState(state, backup[key], incrementedKey)
       }
       if (fieldIndex === index) {
         resetFieldState(key)
       }
     }
   })
-  state.fields = { ...state.fields, ...changes }
 }
 
 export default insert
