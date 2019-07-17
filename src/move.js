@@ -1,5 +1,6 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
+import moveFieldState from './moveFieldState'
 
 const move: Mutator<any> = (
   [name, from, to]: any[],
@@ -27,43 +28,28 @@ const move: Mutator<any> = (
         // decrement all indices between from and to
         for (let i = from; i < to; i++) {
           const destKey = `${name}[${i}]${suffix}`
-          moveFieldState({
-            destKey,
-            source: state.fields[`${name}[${i + 1}]${suffix}`]
-          })
+          moveFieldState(
+            state,
+            state.fields[`${name}[${i + 1}]${suffix}`],
+            destKey
+          )
         }
       } else {
         // moving to a lower index
         // increment all indices between to and from
         for (let i = from; i > to; i--) {
           const destKey = `${name}[${i}]${suffix}`
-          moveFieldState({
-            destKey,
-            source: state.fields[`${name}[${i - 1}]${suffix}`]
-          })
+          moveFieldState(
+            state,
+            state.fields[`${name}[${i - 1}]${suffix}`],
+            destKey
+          )
         }
       }
       const toKey = `${name}[${to}]${suffix}`
-      moveFieldState({
-        destKey: toKey,
-        source: backup
-      })
+      moveFieldState(state, backup, toKey)
     }
   })
-
-  function moveFieldState({ destKey, source }) {
-    state.fields[destKey] = {
-      ...source,
-      name: destKey,
-      // prevent functions from being overwritten
-      // if the state.fields[destKey] does not exist, it will be created
-      // when that field gets registered, with its own change/blur/focus callbacks
-      change: state.fields[destKey] && state.fields[destKey].change,
-      blur: state.fields[destKey] && state.fields[destKey].blur,
-      focus: state.fields[destKey] && state.fields[destKey].focus,
-      lastFieldState: undefined // clearing lastFieldState forces renotification
-    }
-  }
 }
 
 export default move

@@ -1,5 +1,6 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
+import moveFieldState from './moveFieldState'
 
 const countBelow = (array, value) =>
   array.reduce((count, item) => (item < value ? count + 1 : count), 0)
@@ -38,7 +39,7 @@ const removeBatch: Mutator<any> = (
   // now we have to remove any subfields for our indexes,
   // and decrement all higher indexes.
   const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
-  const newFields = {}
+  const newState = { ...state, fields: {} }
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
@@ -48,15 +49,13 @@ const removeBatch: Mutator<any> = (
         // shift all higher ones down
         const decrementedKey = `${name}[${fieldIndex -
           countBelow(sortedIndexes, fieldIndex)}]${tokens[2]}`
-        newFields[decrementedKey] = state.fields[key]
-        newFields[decrementedKey].name = decrementedKey
-        newFields[decrementedKey].lastFieldState = undefined
+        moveFieldState(newState, state.fields[key], decrementedKey, state)
       }
     } else {
-      newFields[key] = state.fields[key]
+      newState.fields[key] = state.fields[key]
     }
   })
-  state.fields = newFields
+  state.fields = newState.fields
   return returnValue
 }
 

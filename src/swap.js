@@ -1,5 +1,6 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
+import moveFieldState from './moveFieldState'
 
 const swap: Mutator<any> = (
   [name, indexA, indexB]: any[],
@@ -26,27 +27,10 @@ const swap: Mutator<any> = (
       const bKey = bPrefix + suffix
       const fieldA = state.fields[aKey]
 
-      moveFieldState({
-        destKey: aKey,
-        source: state.fields[bKey]
-      })
-      moveFieldState({
-        destKey: bKey,
-        source: fieldA
-      })
+      moveFieldState(state, state.fields[bKey], aKey)
+      moveFieldState(state, fieldA, bKey)
     }
   })
-
-  function moveFieldState({ destKey, source }) {
-    state.fields[destKey] = {
-      ...source,
-      name: destKey,
-      change: state.fields[destKey].change, // prevent functions from being overwritten
-      blur: state.fields[destKey].blur,
-      focus: state.fields[destKey].focus,
-      lastFieldState: undefined // clearing lastFieldState forces renotification
-    }
-  }
 }
 
 export default swap
