@@ -1,6 +1,7 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 import moveFieldState from './moveFieldState'
+import { escapeRegexTokens } from './utils'
 
 const countBelow = (array, value) =>
   array.reduce((count, item) => (item < value ? count + 1 : count), 0)
@@ -38,7 +39,7 @@ const removeBatch: Mutator<any> = (
 
   // now we have to remove any subfields for our indexes,
   // and decrement all higher indexes.
-  const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
+  const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
   const newState = { ...state, fields: {} }
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)

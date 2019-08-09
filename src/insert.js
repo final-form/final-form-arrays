@@ -1,6 +1,7 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 import moveFieldState from './moveFieldState'
+import { escapeRegexTokens } from './utils'
 
 const insert: Mutator<any> = (
   [name, index, value]: any[],
@@ -14,7 +15,7 @@ const insert: Mutator<any> = (
   })
 
   // now we have increment any higher indexes
-  const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
+  const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
   const backup = { ...state.fields }
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
