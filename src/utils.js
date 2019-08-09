@@ -1,3 +1,3 @@
 // @flow
 export const escapeRegexTokens = (str: string): string =>
-  str.replace(/([\.\-\[])/g, '\\$1')
+  str.replace(/([\.\-[])/g, '\\$1')
