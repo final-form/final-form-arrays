@@ -5,7 +5,7 @@ import moveFieldState from './moveFieldState'
 const remove: Mutator<any> = (
   [name, index]: any[],
   state: MutableState<any>,
-  { changeValue }: Tools<any>
+  { changeValue, renameField }: Tools<any>
 ) => {
   let returnValue
   changeValue(state, name, (array: ?(any[])): any[] => {
@@ -30,7 +30,12 @@ const remove: Mutator<any> = (
         // shift all higher ones down
         delete state.fields[key]
         const decrementedKey = `${name}[${fieldIndex - 1}]${tokens[2]}`
-        moveFieldState(state, backup.fields[key], decrementedKey, backup)
+        if (backup.fields[decrementedKey]) {
+          moveFieldState(state, backup.fields[key], decrementedKey, backup)
+        } else {
+          // take care of setting the correct change, blur, focus, validators on new field
+          renameField(state, key, decrementedKey)
+        }
       }
     }
   })
