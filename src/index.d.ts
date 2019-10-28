@@ -12,18 +12,18 @@ export const swap: Mutator
 export const update: Mutator
 export const unshift: Mutator
 
-export interface DefaultType {
-  insert: Mutator
-  concat: Mutator
-  move: Mutator
-  pop: Mutator
-  push: Mutator
-  removeBatch: Mutator
-  remove: Mutator
-  shift: Mutator
-  swap: Mutator
-  update: Mutator
-  unshift: Mutator
+export interface DefaultType<FormValues = any> {
+  insert: Mutator<FormValues>
+  concat: Mutator<FormValues>
+  move: Mutator<FormValues>
+  pop: Mutator<FormValues>
+  push: Mutator<FormValues>
+  removeBatch: Mutator<FormValues>
+  remove: Mutator<FormValues>
+  shift: Mutator<FormValues>
+  swap: Mutator<FormValues>
+  update: Mutator<FormValues>
+  unshift: Mutator<FormValues>
 }
 
 declare const d: DefaultType
