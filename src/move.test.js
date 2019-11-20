@@ -500,6 +500,121 @@ describe('move', () => {
       }
     })
   })
+  it('should move fields with different complex not matching shapes', () => {
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: [{ dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} },
+            { dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} }]
+        }
+      },
+      fields: {
+        'foo[0].dog': {
+          name: 'foo[0].dog',
+          touched: true,
+          error: 'Error A Dog'
+        },
+        'foo[0].cat': {
+          name: 'foo[0].cat',
+          touched: false,
+          error: 'Error A Cat'
+        },
+        'foo[0].colors[0].name': {
+          name: 'foo[0].colors[0].name',
+          touched: true,
+          error: 'Error A Colors Red'
+        },
+        'foo[0].colors[1].name': {
+          name: 'foo[0].colors[1].name',
+          touched: true,
+          error: 'Error A Colors Blue'
+        },
+        'foo[0].deep.inside.rock': {
+          name: 'foo[0].deep.inside.rock',
+          touched: true,
+          error: 'Error A Deep Inside Rock Black'
+        },
+        'foo[1].dog': {
+          name: 'foo[1].dog',
+          touched: true,
+          error: 'Error B Dog'
+        },
+        'foo[1].mouse': {
+          name: 'foo[1].mouse',
+          touched: true,
+          error: 'Error B Mickey'
+        },
+        'foo[1].deep.inside.axe': {
+          name: 'foo[1].deep.inside.axe',
+          touched: true,
+          error: 'Error B Deep Inside Axe Golden'
+        },
+      }
+    }
+    move(['foo', 0, 1], state, { changeValue })
+    expect(state).toMatchObject({
+      formState: {
+        values: {
+          foo: [{ dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} },
+            { dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} }]
+        }
+      },
+      fields: {
+        'foo[0].dog': {
+          name: 'foo[0].dog',
+          touched: true,
+          error: 'Error B Dog',
+          lastFieldState: undefined
+        },
+        'foo[0].mouse': {
+          name: 'foo[0].mouse',
+          touched: true,
+          error: 'Error B Mickey',
+          lastFieldState: undefined
+        },
+        'foo[0].deep.inside.axe': {
+          name: 'foo[0].deep.inside.axe',
+          touched: true,
+          error: 'Error B Deep Inside Axe Golden'
+        },
+        'foo[1].dog': {
+          name: 'foo[1].dog',
+          touched: true,
+          error: 'Error A Dog',
+          lastFieldState: undefined
+        },
+        'foo[1].cat': {
+          name: 'foo[1].cat',
+          touched: false,
+          error: 'Error A Cat',
+          lastFieldState: undefined
+        },
+        'foo[1].colors[0].name': {
+          name: 'foo[1].colors[0].name',
+          touched: true,
+          error: 'Error A Colors Red',
+          lastFieldState: undefined
+        },
+        'foo[1].colors[1].name': {
+          name: 'foo[1].colors[1].name',
+          touched: true,
+          error: 'Error A Colors Blue',
+          lastFieldState: undefined
+        },
+        'foo[1].deep.inside.rock': {
+          name: 'foo[1].deep.inside.rock',
+          touched: true,
+          error: 'Error A Deep Inside Rock Black'
+        },
+      }
+    })
+  })
 
   it('should preserve functions in field state', () => {
     // implementation of changeValue taken directly from Final Form

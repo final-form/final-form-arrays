@@ -1,6 +1,10 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
 import moveFieldState from './moveFieldState'
+import moveFields from './moveFields';
+import restoreFunctions from './restoreFunctions';
+
+const TMP: string = 'tmp'
 
 const swap: Mutator<any> = (
   [name, indexA, indexB]: any[],
@@ -17,20 +21,20 @@ const swap: Mutator<any> = (
     copy[indexB] = a
     return copy
   })
+
+  //make a copy of a state for further functions restore
+  const backupState = { ...state, fields: { ...state.fields } }
+
   // swap all field state that begin with "name[indexA]" with that under "name[indexB]"
   const aPrefix = `${name}[${indexA}]`
   const bPrefix = `${name}[${indexB}]`
-  Object.keys(state.fields).forEach(key => {
-    if (key.substring(0, aPrefix.length) === aPrefix) {
-      const suffix = key.substring(aPrefix.length)
-      const aKey = aPrefix + suffix
-      const bKey = bPrefix + suffix
-      const fieldA = state.fields[aKey]
+  const tmpPrefix = `${name}[${TMP}]`
 
-      moveFieldState(state, state.fields[bKey], aKey)
-      moveFieldState(state, fieldA, bKey)
-    }
-  })
+  moveFields(name, aPrefix, TMP, state)
+  moveFields(name, bPrefix, indexA, state)
+  moveFields(name, tmpPrefix, indexB, state)
+
+  restoreFunctions(state, backupState)
 }
 
 export default swap
