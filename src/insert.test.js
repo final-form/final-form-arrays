@@ -162,4 +162,84 @@ describe('insert', () => {
       }
     })
   })
+
+  it('should increment other field data from the specified index (nested arrays)', () => {
+    const array = ['a', 'b', 'c', 'd']
+    // implementation of changeValue taken directly from Final Form
+    const changeValue = (state, name, mutate) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+    const resetFieldState = name => {
+      state.fields[name].touched = false
+    }
+    const state = {
+      formState: {
+        values: {
+          foo: [array]
+        }
+      },
+      fields: {
+        'foo[0][0]': {
+          name: 'foo[0][0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[0][1]': {
+          name: 'foo[0][1]',
+          touched: true,
+          error: 'B Error'
+        },
+        'foo[0][2]': {
+          name: 'foo[0][2]',
+          touched: true,
+          error: 'C Error'
+        },
+        'foo[0][3]': {
+          name: 'foo[0][3]',
+          touched: false,
+          error: 'D Error'
+        }
+      }
+    }
+    const returnValue = insert(['foo[0]', 1, 'NEWVALUE'], state, {
+      changeValue,
+      resetFieldState
+    })
+    expect(returnValue).toBeUndefined()
+    expect(state.formState.values.foo).not.toBe(array) // copied
+    expect(state).toEqual({
+      formState: {
+        values: {
+          foo: [['a', 'NEWVALUE', 'b', 'c', 'd']]
+        }
+      },
+      fields: {
+        'foo[0][0]': {
+          name: 'foo[0][0]',
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[0][2]': {
+          name: 'foo[0][2]',
+          touched: true,
+          error: 'B Error',
+          lastFieldState: undefined
+        },
+        'foo[0][3]': {
+          name: 'foo[0][3]',
+          touched: true,
+          error: 'C Error',
+          lastFieldState: undefined
+        },
+        'foo[0][4]': {
+          name: 'foo[0][4]',
+          touched: false,
+          error: 'D Error',
+          lastFieldState: undefined
+        }
+      }
+    })
+  })
 })

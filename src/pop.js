@@ -1,5 +1,6 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
+import { escapeRegexTokens } from './utils'
 
 const pop: Mutator<any> = (
   [name]: any[],
@@ -21,7 +22,9 @@ const pop: Mutator<any> = (
 
   // now we have to remove any subfields for our index,
   if (removedIndex !== undefined) {
-    const pattern = new RegExp(`^${name}\\[${removedIndex}].*`)
+    const pattern = new RegExp(
+      `^${escapeRegexTokens(name)}\\[${removedIndex}].*`
+    )
     Object.keys(state.fields).forEach(key => {
       if (pattern.test(key)) {
         delete state.fields[key]
