@@ -221,12 +221,6 @@ describe('insert', () => {
           touched: true,
           error: 'A Error'
         },
-        'foo[0][1]': {
-          name: 'foo[0][1]',
-          touched: false,
-          error: 'B Error',
-          lastFieldState: undefined
-        },
         'foo[0][2]': {
           name: 'foo[0][2]',
           touched: true,
