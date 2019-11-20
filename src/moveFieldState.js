@@ -7,6 +7,7 @@ function moveFieldState(
   destKey: string,
   oldState: MutableState<any> = state
 ) {
+  delete state.fields[source.name]
   state.fields[destKey] = {
     ...source,
     name: destKey,
@@ -17,6 +18,15 @@ function moveFieldState(
     blur: oldState.fields[destKey] && oldState.fields[destKey].blur,
     focus: oldState.fields[destKey] && oldState.fields[destKey].focus,
     lastFieldState: undefined // clearing lastFieldState forces renotification
+  }
+  if (!state.fields[destKey].change) {
+    delete state.fields[destKey].change;
+  }
+  if (!state.fields[destKey].blur) {
+    delete state.fields[destKey].blur;
+  }
+  if (!state.fields[destKey].focus) {
+    delete state.fields[destKey].focus;
   }
 }
 

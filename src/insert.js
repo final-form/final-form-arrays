@@ -13,23 +13,27 @@ const insert: Mutator<any> = (
     return copy
   })
 
+  const backup = { ...state.fields }
+
   // now we have increment any higher indexes
   const pattern = new RegExp(`^${name}\\[(\\d+)\\](.*)`)
-  const backup = { ...state.fields }
-  Object.keys(state.fields).forEach(key => {
-    const tokens = pattern.exec(key)
-    if (tokens) {
-      const fieldIndex = Number(tokens[1])
-      if (fieldIndex >= index) {
-        // inc index one higher
-        const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
-        moveFieldState(state, backup[key], incrementedKey)
+
+  // we need to increment high indices first so
+  // lower indices won't overlap
+  Object.keys(state.fields)
+    .sort()
+    .reverse()
+    .forEach(key => {
+      const tokens = pattern.exec(key)
+      if (tokens) {
+        const fieldIndex = Number(tokens[1])
+        if (fieldIndex >= index) {
+          // inc index one higher
+          const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
+          moveFieldState(state, backup[key], incrementedKey)
+        }
       }
-      if (fieldIndex === index) {
-        resetFieldState(key)
-      }
-    }
-  })
+    })
 }
 
 export default insert

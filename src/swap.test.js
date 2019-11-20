@@ -121,7 +121,7 @@ describe('swap', () => {
     })
   })
 
-  it('should swap field state for deep fields', () => {
+  it('should swap field state for deep fields and different shapes', () => {
     // implementation of changeValue taken directly from Final Form
     const changeValue = (state, name, mutate) => {
       const before = getIn(state.formState.values, name)
@@ -132,9 +132,9 @@ describe('swap', () => {
       formState: {
         values: {
           foo: [
-            { dog: 'apple dog', cat: 'apple cat' },
+            { dog: 'apple dog', cat: 'apple cat', rock: 'black' },
             { dog: 'banana dog', cat: 'banana cat' },
-            { dog: 'carrot dog', cat: 'carrot cat' },
+            { dog: 'carrot dog', cat: 'carrot cat', axe: 'golden' },
             { dog: 'date dog', cat: 'date cat' }
           ]
         }
@@ -150,6 +150,12 @@ describe('swap', () => {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error A Cat',
+          lastFieldState: 'anything'
+        },
+        'foo[0].rock': {
+          name: 'foo[0].rock',
+          touched: false,
+          error: 'Error A Rock',
           lastFieldState: 'anything'
         },
         'foo[1].dog': {
@@ -174,6 +180,12 @@ describe('swap', () => {
           name: 'foo[2].cat',
           touched: false,
           error: 'Error C Cat',
+          lastFieldState: 'anything'
+        },
+        'foo[2].axe': {
+          name: 'foo[2].axe',
+          touched: false,
+          error: 'Error C Axe',
           lastFieldState: 'anything'
         },
         'foo[3].dog': {
@@ -195,9 +207,9 @@ describe('swap', () => {
       formState: {
         values: {
           foo: [
-            { dog: 'carrot dog', cat: 'carrot cat' },
+            { dog: 'carrot dog', cat: 'carrot cat', axe: 'golden' },
             { dog: 'banana dog', cat: 'banana cat' },
-            { dog: 'apple dog', cat: 'apple cat' },
+            { dog: 'apple dog', cat: 'apple cat', rock: 'black' },
             { dog: 'date dog', cat: 'date cat' }
           ]
         }
@@ -213,6 +225,12 @@ describe('swap', () => {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error C Cat',
+          lastFieldState: undefined
+        },
+        'foo[0].axe': {
+          name: 'foo[0].axe',
+          touched: false,
+          error: 'Error C Axe',
           lastFieldState: undefined
         },
         'foo[1].dog': {
@@ -237,6 +255,12 @@ describe('swap', () => {
           name: 'foo[2].cat',
           touched: false,
           error: 'Error A Cat',
+          lastFieldState: undefined
+        },
+        'foo[2].rock': {
+          name: 'foo[2].rock',
+          touched: false,
+          error: 'Error A Rock',
           lastFieldState: undefined
         },
         'foo[3].dog': {
