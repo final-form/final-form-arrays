@@ -6,7 +6,7 @@ import { escapeRegexTokens } from './utils'
 const remove: Mutator<any> = (
   [name, index]: any[],
   state: MutableState<any>,
-  { changeValue, renameField }: Tools<any>
+  { changeValue, renameField, getIn, setIn }: Tools<any>
 ) => {
   let returnValue
   changeValue(state, name, (array: ?(any[])): any[] => {
@@ -27,6 +27,17 @@ const remove: Mutator<any> = (
       if (fieldIndex === index) {
         // delete any subfields for this array item
         delete state.fields[key]
+        // delete any submitErrors for this array item
+        // if the root key of the delete index
+        if (key === `${name}[${index}]`) {
+          const path = `formState.submitErrors.${name}`
+          const submitErrors = getIn(state, path)
+          // if has submitErrors for array
+          if (Array.isArray(submitErrors)) {
+            submitErrors.splice(index, 1)
+            state = setIn(state, path, submitErrors)
+          }
+        }
       } else if (fieldIndex > index) {
         // shift all higher ones down
         delete state.fields[key]

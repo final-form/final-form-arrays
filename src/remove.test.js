@@ -23,7 +23,7 @@ describe('remove', () => {
         }
       }
     }
-    const result = remove(['foo', 0], state, { changeValue })
+    const result = remove(['foo', 0], state, { changeValue, getIn, setIn })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -42,7 +42,7 @@ describe('remove', () => {
       },
       fields: {}
     }
-    const returnValue = remove(['foo', 1], state, { changeValue })
+    const returnValue = remove(['foo', 1], state, { changeValue, getIn, setIn })
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -116,7 +116,7 @@ describe('remove', () => {
         }
       }
     }
-    const returnValue = remove(['foo', 1], state, { changeValue })
+    const returnValue = remove(['foo', 1], state, { changeValue, getIn, setIn })
     expect(returnValue).toBe('b')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -160,7 +160,6 @@ describe('remove', () => {
       }
     })
   })
-  
 
   it('should remove value from the specified index, and return it (nested arrays)', () => {
     const array = ['a', 'b', 'c', 'd']
@@ -228,7 +227,11 @@ describe('remove', () => {
         }
       }
     }
-    const returnValue = remove(['foo[0]', 1], state, { changeValue })
+    const returnValue = remove(['foo[0]', 1], state, {
+      changeValue,
+      getIn,
+      setIn
+    })
     expect(returnValue).toBe('b')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -271,7 +274,7 @@ describe('remove', () => {
         }
       }
     })
-  })  
+  })
 
   it('should remove value from the specified index, and handle new fields', () => {
     const array = ['a', { key: 'val' }]
@@ -324,11 +327,175 @@ describe('remove', () => {
         }
       }
     }
-    const returnValue = remove(['foo', 0], state, { renameField, changeValue })
+    const returnValue = remove(['foo', 0], state, {
+      renameField,
+      changeValue,
+      getIn,
+      setIn
+    })
     expect(returnValue).toBeUndefined()
     expect(renameField).toHaveBeenCalledTimes(1)
     expect(renameField.mock.calls[0][0]).toEqual(state)
     expect(renameField.mock.calls[0][1]).toEqual('foo[1].key')
     expect(renameField.mock.calls[0][2]).toEqual('foo[0].key')
+  })
+
+  it('should remove value from the specified index with submitError if one error in array', () => {
+    const array = ['a', { key: 'val' }]
+    const changeValue = jest.fn()
+    const renameField = jest.fn()
+    function blur0() {}
+    function change0() {}
+    function focus0() {}
+    function blur1() {}
+    function change1() {}
+    function focus1() {}
+    function blur2() {}
+    function change2() {}
+    function focus2() {}
+    const state = {
+      formState: {
+        values: {
+          foo: array,
+          anotherField: 42
+        },
+        submitErrors: {
+          foo: [
+            {
+              key: 'A Submit Error'
+            }
+          ]
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[0].key': {
+          name: 'foo[0].key',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
+          touched: false,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[1].key': {
+          name: 'foo[1].key',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
+          touched: false,
+          error: 'B Error'
+        },
+        anotherField: {
+          name: 'anotherField',
+          touched: false
+        }
+      }
+    }
+
+    const returnValue = remove(['foo', 0], state, {
+      renameField,
+      changeValue,
+      getIn,
+      setIn
+    })
+    expect(returnValue).toBeUndefined()
+    expect(getIn(state, 'formState.submitErrors')).toEqual({ foo: [] })
+  })
+
+  it('should remove value from the specified index with submitError if two errors in array', () => {
+    const array = ['a', { key: 'val' }]
+    const changeValue = jest.fn()
+    const renameField = jest.fn()
+    function blur0() {}
+    function change0() {}
+    function focus0() {}
+    function blur1() {}
+    function change1() {}
+    function focus1() {}
+    function blur2() {}
+    function change2() {}
+    function focus2() {}
+    const state = {
+      formState: {
+        values: {
+          foo: array,
+          anotherField: 42
+        },
+        submitErrors: {
+          foo: [
+            {
+              key: 'A Submit Error'
+            },
+            {
+              key: 'B Submit Error'
+            }
+          ]
+        }
+      },
+      fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
+          touched: true,
+          error: 'A Error'
+        },
+        'foo[0].key': {
+          name: 'foo[0].key',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
+          touched: false,
+          error: 'A Error'
+        },
+        'foo[1]': {
+          name: 'foo[1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
+          touched: false,
+          error: 'B Error'
+        },
+        'foo[1].key': {
+          name: 'foo[1].key',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
+          touched: false,
+          error: 'B Error'
+        },
+        anotherField: {
+          name: 'anotherField',
+          touched: false
+        }
+      }
+    }
+
+    const returnValue = remove(['foo', 0], state, {
+      renameField,
+      changeValue,
+      getIn,
+      setIn
+    })
+    expect(returnValue).toBeUndefined()
+    expect(getIn(state, 'formState.submitErrors')).toEqual({
+      foo: [{ key: 'B Submit Error' }]
+    })
   })
 })
