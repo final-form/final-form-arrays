@@ -57,7 +57,15 @@ module.exports = {
       description: 'Generates table of contents in README',
       script: 'doctoc README.md'
     },
-    copyTypes: npsUtils.copy('src/*.js.flow src/*.d.ts dist'),
+    copyTypes: series(
+      npsUtils.copy('src/*.js.flow src/*.d.ts dist'),
+      npsUtils.copy(
+        'dist/index.js.flow dist --rename="final-form-arrays.cjs.js.flow"'
+      ),
+      npsUtils.copy(
+        'dist/index.js.flow dist --rename="final-form-arrays.es.js.flow"'
+      )
+    ),
     lint: {
       description: 'lint the entire project',
       script: 'eslint .'
