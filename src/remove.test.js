@@ -137,18 +137,18 @@ describe('remove', () => {
         },
         'foo[1]': {
           name: 'foo[1]',
-          blur: blur1,
-          change: change1,
-          focus: focus1,
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error',
           lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
-          blur: blur2,
-          change: change2,
-          focus: focus2,
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
@@ -160,7 +160,6 @@ describe('remove', () => {
       }
     })
   })
-  
 
   it('should remove value from the specified index, and return it (nested arrays)', () => {
     const array = ['a', 'b', 'c', 'd']
@@ -249,18 +248,18 @@ describe('remove', () => {
         },
         'foo[0][1]': {
           name: 'foo[0][1]',
-          blur: blur1,
-          change: change1,
-          focus: focus1,
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error',
           lastFieldState: undefined
         },
         'foo[0][2]': {
           name: 'foo[0][2]',
-          blur: blur2,
-          change: change2,
-          focus: focus2,
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
@@ -271,7 +270,7 @@ describe('remove', () => {
         }
       }
     })
-  })  
+  })
 
   it('should remove value from the specified index, and handle new fields', () => {
     const array = ['a', { key: 'val' }]

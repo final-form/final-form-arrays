@@ -170,9 +170,9 @@ describe('removeBatch', () => {
       fields: {
         'foo[0]': {
           name: 'foo[0]',
-          blur: blur0,
-          change: change0,
-          focus: focus0,
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: false,
           error: 'Second Error',
           lastFieldState: undefined
@@ -307,18 +307,18 @@ describe('removeBatch', () => {
         },
         'foo[1]': {
           name: 'foo[1]',
-          blur: blur1,
-          change: change1,
-          focus: focus1,
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
-          blur: blur2,
-          change: change2,
-          focus: focus2,
+          blur: blur4,
+          change: change4,
+          focus: focus4,
           touched: true,
           error: 'E Error',
           lastFieldState: undefined
@@ -432,18 +432,18 @@ describe('removeBatch', () => {
         },
         'foo[0][1]': {
           name: 'foo[0][1]',
-          blur: blur1,
-          change: change1,
-          focus: focus1,
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
         },
         'foo[0][2]': {
           name: 'foo[0][2]',
-          blur: blur2,
-          change: change2,
-          focus: focus2,
+          blur: blur4,
+          change: change4,
+          focus: focus4,
           touched: true,
           error: 'E Error',
           lastFieldState: undefined
