@@ -81,6 +81,15 @@ describe('unshift', () => {
     const resetFieldState = name => {
       state.fields[name].touched = false
     }
+    function blur0() {}
+    function change0() {}
+    function focus0() {}
+    function blur1() {}
+    function change1() {}
+    function focus1() {}
+    function blur2() {}
+    function change2() {}
+    function focus2() {}
     const state = {
       formState: {
         values: {
@@ -90,16 +99,25 @@ describe('unshift', () => {
       fields: {
         'foo[0]': {
           name: 'foo[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error'
         },
         'foo[1]': {
           name: 'foo[1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: false,
           error: 'B Error'
         },
         'foo[2]': {
           name: 'foo[2]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error'
         }
@@ -120,18 +138,27 @@ describe('unshift', () => {
       fields: {
         'foo[1]': {
           name: 'foo[1]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error',
           lastFieldState: undefined
         },
         'foo[2]': {
           name: 'foo[2]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: false,
           error: 'B Error',
           lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error',
           lastFieldState: undefined
