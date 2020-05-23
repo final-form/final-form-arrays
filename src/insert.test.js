@@ -94,6 +94,18 @@ describe('insert', () => {
     const resetFieldState = name => {
       state.fields[name].touched = false
     }
+    function blur0() {}
+    function change0() {}
+    function focus0() {}
+    function blur1() {}
+    function change1() {}
+    function focus1() {}
+    function blur2() {}
+    function change2() {}
+    function focus2() {}
+    function blur3() {}
+    function change3() {}
+    function focus3() {}
     const state = {
       formState: {
         values: {
@@ -103,21 +115,33 @@ describe('insert', () => {
       fields: {
         'foo[0]': {
           name: 'foo[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error'
         },
         'foo[1]': {
           name: 'foo[1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: true,
           error: 'B Error'
         },
         'foo[2]': {
           name: 'foo[2]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error'
         },
         'foo[3]': {
           name: 'foo[3]',
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error'
         }
@@ -138,23 +162,35 @@ describe('insert', () => {
       fields: {
         'foo[0]': {
           name: 'foo[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error'
         },
         'foo[2]': {
           name: 'foo[2]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: true,
           error: 'B Error',
           lastFieldState: undefined
         },
         'foo[3]': {
           name: 'foo[3]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error',
           lastFieldState: undefined
         },
         'foo[4]': {
           name: 'foo[4]',
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
@@ -174,6 +210,18 @@ describe('insert', () => {
     const resetFieldState = name => {
       state.fields[name].touched = false
     }
+    function blur0() {}
+    function change0() {}
+    function focus0() {}
+    function blur1() {}
+    function change1() {}
+    function focus1() {}
+    function blur2() {}
+    function change2() {}
+    function focus2() {}
+    function blur3() {}
+    function change3() {}
+    function focus3() {}
     const state = {
       formState: {
         values: {
@@ -183,21 +231,33 @@ describe('insert', () => {
       fields: {
         'foo[0][0]': {
           name: 'foo[0][0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error'
         },
         'foo[0][1]': {
           name: 'foo[0][1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: true,
           error: 'B Error'
         },
         'foo[0][2]': {
           name: 'foo[0][2]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error'
         },
         'foo[0][3]': {
           name: 'foo[0][3]',
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error'
         }
@@ -218,23 +278,35 @@ describe('insert', () => {
       fields: {
         'foo[0][0]': {
           name: 'foo[0][0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
           touched: true,
           error: 'A Error'
         },
         'foo[0][2]': {
           name: 'foo[0][2]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
           touched: true,
           error: 'B Error',
           lastFieldState: undefined
         },
         'foo[0][3]': {
           name: 'foo[0][3]',
+          blur: blur2,
+          change: change2,
+          focus: focus2,
           touched: true,
           error: 'C Error',
           lastFieldState: undefined
         },
         'foo[0][4]': {
           name: 'foo[0][4]',
+          blur: blur3,
+          change: change3,
+          focus: focus3,
           touched: false,
           error: 'D Error',
           lastFieldState: undefined
