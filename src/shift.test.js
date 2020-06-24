@@ -23,7 +23,7 @@ describe('shift', () => {
         }
       }
     }
-    const result = shift(['foo'], state, { changeValue })
+    const result = shift(['foo'], state, { changeValue, getIn, setIn })
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -42,7 +42,7 @@ describe('shift', () => {
       },
       fields: {}
     }
-    const returnValue = shift(['foo'], state, { changeValue })
+    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn })
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -92,7 +92,7 @@ describe('shift', () => {
         }
       }
     }
-    const returnValue = shift(['foo'], state, { changeValue })
+    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn })
     expect(returnValue).toBe('a')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
