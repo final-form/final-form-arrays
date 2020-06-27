@@ -14,7 +14,7 @@ const insert: Mutator<any> = (
     return copy
   })
 
-  const backup = { ...state.fields }
+  const backup = { ...state, fields: { ...state.fields } }
 
   // now we have increment any higher indexes
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
@@ -31,7 +31,7 @@ const insert: Mutator<any> = (
         if (fieldIndex >= index) {
           // inc index one higher
           const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
-          moveFieldState(state, backup[key], incrementedKey)
+          moveFieldState(state, backup.fields[key], incrementedKey, backup)
         }
       }
     })
