@@ -324,9 +324,9 @@ describe('swap', () => {
       }
     }
     swap(['foo', 0, 2], state, { changeValue })
-    expect(state.fields['foo[0]'].change()).toBe('foo[0]')
+    expect(state.fields['foo[0]'].change()).toBe('foo[2]')
     expect(state.fields['foo[1]'].change()).toBe('foo[1]')
-    expect(state.fields['foo[2]'].change()).toBe('foo[2]')
+    expect(state.fields['foo[2]'].change()).toBe('foo[0]')
     expect(state.fields['foo[3]'].change()).toBe('foo[3]')
   })
 })
