@@ -1,8 +1,7 @@
 // @flow
 import type { MutableState, Mutator, Tools } from 'final-form'
-import moveFieldState from './moveFieldState'
-import moveFields from './moveFields';
-import restoreFunctions from './restoreFunctions';
+import moveFields from './moveFields'
+import restoreFunctions from './restoreFunctions'
 
 const TMP: string = 'tmp'
 
