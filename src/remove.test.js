@@ -46,8 +46,7 @@ describe('remove', () => {
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
-    expect(Array.isArray(result)).toBe(true)
-    expect(result.length).toBe(0)
+    expect(result).toBeUndefined()
   })
 
   it('should remove value from the specified index, and return it', () => {

@@ -59,7 +59,9 @@ const removeBatch: Mutator<any> = (
       copy.splice(index, 1)
     }
 
-    return copy
+    return copy.length > 0
+      ? copy
+      : undefined
   })
 
   // now we have to remove any subfields for our indexes,

@@ -9,11 +9,17 @@ const remove: Mutator<any> = (
   { changeValue, getIn, setIn }: Tools<any>
 ) => {
   let returnValue
-  changeValue(state, name, (array: ?(any[])): any[] => {
-    const copy = [...(array || [])]
+  changeValue(state, name, (array: ?(any[])): ?(any[]) => {
+    if (!array) {
+      return array
+    }
+
+    const copy = [...array]
     returnValue = copy[index]
     copy.splice(index, 1)
-    return copy
+    return copy.length > 0
+      ? copy
+      : undefined
   })
 
   // now we have to remove any subfields for our index,
