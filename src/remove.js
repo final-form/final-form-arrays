@@ -20,7 +20,7 @@ const remove: Mutator<any> = (
   // and decrement all higher indexes.
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
   const backup = { ...state, fields: { ...state.fields } }
-  Object.keys(state.fields).forEach(key => {
+  Object.keys(state.fields).sort().forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
       const fieldIndex = Number(tokens[1])
