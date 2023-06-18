@@ -6,7 +6,7 @@ import { escapeRegexTokens } from './utils'
 const insert: Mutator<any> = (
   [name, index, value]: any[],
   state: MutableState<any>,
-  { changeValue }: Tools<any>
+  { changeValue, resetFieldState }: Tools<any>
 ) => {
   changeValue(state, name, (array: ?(any[])): any[] => {
     const copy = [...(array || [])]
@@ -25,6 +25,10 @@ const insert: Mutator<any> = (
         // Shift all higher indices up
         const incrementedKey = `${name}[${fieldIndex + 1}]${tokens[2]}`
         copyField(state.fields, key, newFields, incrementedKey)
+        if (fieldIndex === index) {
+          newFields[key] = state.fields[key]
+          resetFieldState(key)
+        }
         return
       }
     }
