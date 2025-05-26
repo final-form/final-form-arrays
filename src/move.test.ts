@@ -1,24 +1,28 @@
 import move from './move'
-import { getIn, setIn } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('move', () => {
-  const getOp = (from, to) => {
+  const getOp = (from: any, to: any) => {
     const changeValue = jest.fn()
-    move(['foo', from, to], { fields: {} }, { changeValue })
+    const mockTools = createMockTools({ changeValue })
+    move(['foo', from, to], { fields: {} } as any, mockTools)
     return changeValue.mock.calls[0][2]
   }
 
   it('should do nothing if from and to are equal', () => {
     const changeValue = jest.fn()
-    const result = move(['foo', 1, 1], { fields: {} }, { changeValue })
+    const mockTools = createMockTools({ changeValue })
+    const result = move(['foo', 1, 1], { fields: {} } as any, mockTools)
     expect(result).toBeUndefined()
     expect(changeValue).not.toHaveBeenCalled()
   })
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = { fields: {} }
-    const result = move(['foo', 0, 2], state, { changeValue })
+    const state: MutableState<any> = { fields: {} } as any
+    const mockTools = createMockTools({ changeValue })
+    const result = move(['foo', 0, 2], state, mockTools)
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -47,16 +51,16 @@ describe('move', () => {
 
   it('should move field state from low index to high index', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['apple', 'banana', 'carrot', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -85,12 +89,12 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 0, 2], state, { changeValue })
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
           foo: ['banana', 'carrot', 'apple', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -123,16 +127,16 @@ describe('move', () => {
 
   it('should move field state from high index to low index', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['apple', 'banana', 'carrot', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -161,12 +165,12 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 2, 0], state, { changeValue })
+    move(['foo', 2, 0], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
           foo: ['carrot', 'apple', 'banana', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -199,12 +203,12 @@ describe('move', () => {
 
   it('should move deep field state from low index to high index', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: [
@@ -220,45 +224,45 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error A Dog'
-        },
+        } as any,
         'foo[0].cat': {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error A Cat'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error B Dog'
-        },
+        } as any,
         'foo[1].cat': {
           name: 'foo[1].cat',
           touched: true,
           error: 'Error B Cat'
-        },
+        } as any,
         'foo[2].dog': {
           name: 'foo[2].dog',
           touched: true,
           error: 'Error C Dog'
-        },
+        } as any,
         'foo[2].cat': {
           name: 'foo[2].cat',
           touched: false,
           error: 'Error C Cat'
-        },
+        } as any,
         'foo[3].dog': {
           name: 'foo[3].dog',
           touched: false,
           error: 'Error D Dog'
-        },
+        } as any,
         'foo[3].cat': {
           name: 'foo[3].cat',
           touched: true,
           error: 'Error D Cat'
-        }
+        } as any
       }
     }
-    move(['foo', 0, 2], state, { changeValue })
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
@@ -281,17 +285,17 @@ describe('move', () => {
           name: 'foo[0].cat',
           touched: true,
           error: 'Error B Cat'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error C Dog'
-        },
+        } as any,
         'foo[1].cat': {
           name: 'foo[1].cat',
           touched: false,
           error: 'Error C Cat'
-        },
+        } as any,
         'foo[2].dog': {
           name: 'foo[2].dog',
           touched: true,
@@ -308,24 +312,24 @@ describe('move', () => {
           name: 'foo[3].dog',
           touched: false,
           error: 'Error D Dog'
-        },
+        } as any,
         'foo[3].cat': {
           name: 'foo[3].cat',
           touched: true,
           error: 'Error D Cat'
-        }
+        } as any
       }
     })
   })
 
   it('should move deep field state from high index to low index', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: [
@@ -341,45 +345,45 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error A Dog'
-        },
+        } as any,
         'foo[0].cat': {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error A Cat'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error B Dog'
-        },
+        } as any,
         'foo[1].cat': {
           name: 'foo[1].cat',
           touched: true,
           error: 'Error B Cat'
-        },
+        } as any,
         'foo[2].dog': {
           name: 'foo[2].dog',
           touched: true,
           error: 'Error C Dog'
-        },
+        } as any,
         'foo[2].cat': {
           name: 'foo[2].cat',
           touched: false,
           error: 'Error C Cat'
-        },
+        } as any,
         'foo[3].dog': {
           name: 'foo[3].dog',
           touched: false,
           error: 'Error D Dog'
-        },
+        } as any,
         'foo[3].cat': {
           name: 'foo[3].cat',
           touched: true,
           error: 'Error D Cat'
-        }
+        } as any
       }
     }
-    move(['foo', 2, 0], state, { changeValue })
+    move(['foo', 2, 0], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
@@ -408,12 +412,12 @@ describe('move', () => {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error A Dog'
-        },
+        } as any,
         'foo[1].cat': {
           name: 'foo[1].cat',
           touched: false,
           error: 'Error A Cat'
-        },
+        } as any,
         'foo[2].dog': {
           name: 'foo[2].dog',
           touched: true,
@@ -430,53 +434,53 @@ describe('move', () => {
           name: 'foo[3].dog',
           touched: false,
           error: 'Error D Dog'
-        },
+        } as any,
         'foo[3].cat': {
           name: 'foo[3].cat',
           touched: true,
           error: 'Error D Cat'
-        }
+        } as any
       }
     })
   })
 
   it('should move fields with different shapes', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: [{ dog: 'apple dog', cat: 'apple cat' }, { dog: 'banana dog' }]
-        }
+        } as any
       },
       fields: {
         'foo[0].dog': {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error A Dog'
-        },
+        } as any,
         'foo[0].cat': {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error A Cat'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error B Dog'
-        }
+        } as any
       }
     }
-    move(['foo', 0, 1], state, { changeValue })
+    move(['foo', 0, 1], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
           foo: [{ dog: 'banana dog' }, { dog: 'apple dog', cat: 'apple cat' }]
-        }
+        } as any
       },
       fields: {
         'foo[0].dog': {
@@ -502,16 +506,16 @@ describe('move', () => {
   })
   it('should move fields with different complex not matching shapes', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
-          foo: [{ dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} },
-            { dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} }]
+          foo: [{ dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red' }, { name: 'blue' }], deep: { inside: { rock: 'black' } } },
+          { dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' } } }]
         }
       },
       fields: {
@@ -519,50 +523,50 @@ describe('move', () => {
           name: 'foo[0].dog',
           touched: true,
           error: 'Error A Dog'
-        },
+        } as any,
         'foo[0].cat': {
           name: 'foo[0].cat',
           touched: false,
           error: 'Error A Cat'
-        },
+        } as any,
         'foo[0].colors[0].name': {
           name: 'foo[0].colors[0].name',
           touched: true,
           error: 'Error A Colors Red'
-        },
+        } as any,
         'foo[0].colors[1].name': {
           name: 'foo[0].colors[1].name',
           touched: true,
           error: 'Error A Colors Blue'
-        },
+        } as any,
         'foo[0].deep.inside.rock': {
           name: 'foo[0].deep.inside.rock',
           touched: true,
           error: 'Error A Deep Inside Rock Black'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
           error: 'Error B Dog'
-        },
+        } as any,
         'foo[1].mouse': {
           name: 'foo[1].mouse',
           touched: true,
           error: 'Error B Mickey'
-        },
+        } as any,
         'foo[1].deep.inside.axe': {
           name: 'foo[1].deep.inside.axe',
           touched: true,
           error: 'Error B Deep Inside Axe Golden'
-        },
+        } as any,
       }
     }
-    move(['foo', 0, 1], state, { changeValue })
+    move(['foo', 0, 1], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
-          foo: [{ dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} },
-            { dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} }]
+          foo: [{ dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' } } },
+          { dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red' }, { name: 'blue' }], deep: { inside: { rock: 'black' } } }]
         }
       },
       fields: {
@@ -582,7 +586,7 @@ describe('move', () => {
           name: 'foo[0].deep.inside.axe',
           touched: true,
           error: 'Error B Deep Inside Axe Golden'
-        },
+        } as any,
         'foo[1].dog': {
           name: 'foo[1].dog',
           touched: true,
@@ -611,23 +615,23 @@ describe('move', () => {
           name: 'foo[1].deep.inside.rock',
           touched: true,
           error: 'Error A Deep Inside Rock Black'
-        },
+        } as any,
       }
     })
   })
 
   it('should preserve functions in field state', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['apple', 'banana', 'carrot', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -660,7 +664,7 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 0, 2], state, { changeValue })
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state.fields['foo[0]'].change()).toBe('foo[0]')
     expect(state.fields['foo[1]'].change()).toBe('foo[1]')
     expect(state.fields['foo[2]'].change()).toBe('foo[2]')

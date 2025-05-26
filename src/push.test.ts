@@ -1,16 +1,20 @@
 import push from './push'
+import { createMockState, createMockTools } from './testUtils'
 
 describe('push', () => {
-  const getOp = value => {
+  const getOp = (value: any) => {
     const changeValue = jest.fn()
-    push(['foo', value], {}, { changeValue })
+    const mockState = createMockState()
+    const mockTools = createMockTools({ changeValue })
+    push(['foo', value], mockState, mockTools)
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
-    const result = push(['foo', 'bar'], state, { changeValue })
+    const state = createMockState()
+    const tools = createMockTools({ changeValue })
+    const result = push(['foo', 'bar'], state, tools)
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -33,4 +37,4 @@ describe('push', () => {
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['a', 'b', 'c', 'd'])
   })
-})
+}) 

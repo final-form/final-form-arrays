@@ -1,16 +1,31 @@
 import update from './update'
+import { MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('update', () => {
-  const getOp = (index, value) => {
+  const getOp = (index: number, value: any) => {
     const changeValue = jest.fn()
-    update(['foo', index, value], {}, { changeValue })
+    const mockState: MutableState<any> = {
+      fieldSubscribers: {},
+      fields: {},
+      formState: {
+        values: {}
+      }
+    } as any
+    update(['foo', index, value], mockState, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
-    const result = update(['foo', 0, 'bar'], state, { changeValue })
+    const state: MutableState<any> = {
+      fieldSubscribers: {},
+      fields: {},
+      formState: {
+        values: {}
+      }
+    } as any
+    const result = update(['foo', 0, 'bar'], state, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -35,4 +50,4 @@ describe('update', () => {
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['a', 'd', 'c'])
   })
-})
+}) 

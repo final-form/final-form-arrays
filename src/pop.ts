@@ -1,12 +1,11 @@
-// @flow
-import type { MutableState, Mutator, Tools } from 'final-form'
+import { MutableState, Mutator, Tools } from 'final-form'
 import remove from './remove'
 
 const pop: Mutator<any> = (
   [name]: any[],
   state: MutableState<any>,
   tools: Tools<any>
-) => {
+): any => {
   const { getIn } = tools;
   const array = getIn(state.formState.values, name)
   return array && array.length > 0
@@ -14,4 +13,4 @@ const pop: Mutator<any> = (
     : undefined
 }
 
-export default pop
+export default pop 

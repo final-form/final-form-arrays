@@ -1,5 +1,4 @@
-// @flow
-import type { MutableState, Mutator, Tools } from 'final-form'
+import { MutableState, Mutator, Tools } from 'final-form'
 import copyField from './copyField'
 import { escapeRegexTokens } from './utils'
 
@@ -7,11 +6,11 @@ const move: Mutator<any> = (
   [name, from, to]: any[],
   state: MutableState<any>,
   { changeValue }: Tools<any>
-) => {
+): void => {
   if (from === to) {
     return
   }
-  changeValue(state, name, (array: ?(any[])): any[] => {
+  changeValue(state, name, (array?: any[]): any[] => {
     const copy = [...(array || [])]
     const value = copy[from]
     copy.splice(from, 1)
@@ -19,11 +18,11 @@ const move: Mutator<any> = (
     return copy
   })
 
-  const newFields = {}
+  const newFields: { [key: string]: any } = {}
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
-  let lowest
-  let highest
-  let increment
+  let lowest: number
+  let highest: number
+  let increment: number
   if (from > to) {
     lowest = to
     highest = from
@@ -42,7 +41,7 @@ const move: Mutator<any> = (
         copyField(state.fields, key, newFields, newKey)
         return
       }
-      
+
       if (lowest <= fieldIndex && fieldIndex <= highest) {
         // Shift all indices
         const newKey = `${name}[${fieldIndex + increment}]${tokens[2]}`
@@ -59,4 +58,4 @@ const move: Mutator<any> = (
   state.fields = newFields
 }
 
-export default move
+export default move 

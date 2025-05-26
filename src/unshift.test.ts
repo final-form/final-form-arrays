@@ -1,59 +1,57 @@
 import unshift from './unshift'
-import { getIn, setIn } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('unshift', () => {
-  const getOp = value => {
+  const getOp = (value: any) => {
     const changeValue = jest.fn()
     const resetFieldState = jest.fn()
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two']
         }
-      },
+      } as any,
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'Second Error'
-        }
+        } as any
       }
-    }
-    unshift(['foo', value], state, { changeValue, resetFieldState })
+    } as any
+    unshift(['foo', value], state, createMockTools({ changeValue, resetFieldState }))
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
     const resetFieldState = jest.fn()
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two']
         }
-      },
+      } as any,
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'Second Error'
-        }
+        } as any
       }
-    }
-    const result = unshift(['foo', 'bar'], state, {
-      changeValue,
-      resetFieldState
-    })
+    } as any
+    const result = unshift(['foo', 'bar'], state, createMockTools({ changeValue, resetFieldState }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -73,42 +71,39 @@ describe('unshift', () => {
   it('should insert value to beginning of array', () => {
     const array = ['a', 'b', 'c']
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
     }
-    const resetFieldState = name => {
+    const resetFieldState = (name: string) => {
       state.fields[name].touched = false
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: array
         }
-      },
+      } as any,
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'A Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'B Error'
-        },
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
           error: 'C Error'
-        }
+        } as any
       }
-    }
-    const returnValue = unshift(['foo', 'NEWVALUE'], state, {
-      changeValue,
-      resetFieldState
-    })
+    } as any
+    const returnValue = unshift(['foo', 'NEWVALUE'], state, createMockTools({ changeValue, resetFieldState }))
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -139,4 +134,4 @@ describe('unshift', () => {
       }
     })
   })
-})
+}) 

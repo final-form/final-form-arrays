@@ -1,24 +1,25 @@
 import swap from './swap'
-import { getIn, setIn } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('swap', () => {
-  const getOp = (from, to) => {
+  const getOp = (from, to: any) => {
     const changeValue = jest.fn()
-    swap(['foo', from, to], { fields: {} }, { changeValue })
+    swap(['foo', from, to], { fields: {} }, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
   it('should do nothing if indexA and indexB are equal', () => {
     const changeValue = jest.fn()
-    const result = swap(['foo', 1, 1], { fields: {} }, { changeValue })
+    const result = swap(['foo', 1, 1], { fields: {} }, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).not.toHaveBeenCalled()
   })
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = { fields: {} }
-    const result = swap(['foo', 0, 2], state, { changeValue })
+    const state: MutableState<any> = { fields: {} }
+    const result = swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -47,16 +48,16 @@ describe('swap', () => {
 
   it('should swap field state as well as values', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['apple', 'banana', 'carrot', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -85,12 +86,12 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue })
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
           foo: ['carrot', 'banana', 'apple', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[2]': {
@@ -123,12 +124,12 @@ describe('swap', () => {
 
   it('should swap field state for deep fields and different shapes', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: [
@@ -202,7 +203,7 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue })
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
@@ -281,16 +282,16 @@ describe('swap', () => {
 
   it('should preserve functions in field state', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['apple', 'banana', 'carrot', 'date']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -323,7 +324,7 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue })
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state.fields['foo[0]'].change()).toBe('foo[0]')
     expect(state.fields['foo[1]'].change()).toBe('foo[1]')
     expect(state.fields['foo[2]'].change()).toBe('foo[2]')

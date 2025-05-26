@@ -1,5 +1,4 @@
-// @flow
-import type { MutableState, Mutator, Tools } from 'final-form'
+import { MutableState, Mutator, Tools } from 'final-form'
 import copyField from './copyField'
 import { escapeRegexTokens } from './utils'
 
@@ -7,16 +6,16 @@ const insert: Mutator<any> = (
   [name, index, value]: any[],
   state: MutableState<any>,
   { changeValue }: Tools<any>
-) => {
-  changeValue(state, name, (array: ?(any[])): any[] => {
+): void => {
+  changeValue(state, name, (array?: any[]): any[] => {
     const copy = [...(array || [])]
     copy.splice(index, 0, value)
     return copy
   })
 
-  // now we have increment any higher indexes
+  // now increment any higher indices
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
-  const newFields = {}
+  const newFields: { [key: string]: any } = {}
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
@@ -37,4 +36,4 @@ const insert: Mutator<any> = (
   state.fields = newFields
 }
 
-export default insert
+export default insert 

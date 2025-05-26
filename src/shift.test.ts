@@ -1,29 +1,30 @@
 import shift from './shift'
-import { getIn, setIn } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('shift', () => {
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two']
         }
-      },
+      } as any,
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'Second Error'
-        }
+        } as any
       }
-    }
-    const result = shift(['foo'], state, { changeValue, getIn, setIn })
+    } as any
+    const result = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -34,15 +35,15 @@ describe('shift', () => {
 
   it('should treat undefined like an empty array', () => {
     const changeValue = jest.fn()
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: undefined
         }
-      },
+      } as any,
       fields: {}
-    }
-    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn })
+    } as any
+    const returnValue = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -52,46 +53,46 @@ describe('shift', () => {
   it('should remove first value from array and return it', () => {
     const array = ['a', 'b', 'c', 'd']
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
     }
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: array,
           anotherField: 42
         }
-      },
+      } as any,
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'A Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'B Error'
-        },
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
           error: 'C Error'
-        },
+        } as any,
         'foo[3]': {
           name: 'foo[3]',
           touched: false,
           error: 'D Error'
-        },
+        } as any,
         anotherField: {
           name: 'anotherField',
           touched: false
-        }
+        } as any
       }
-    }
-    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn })
+    } as any
+    const returnValue = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBe('a')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -127,4 +128,4 @@ describe('shift', () => {
       }
     })
   })
-})
+}) 
