@@ -2,7 +2,6 @@
 *.iml
 .nyc_output
 coverage
-flow-coverage
 node_modules
 dist
 lib
@@ -11,3 +10,4 @@ npm-debug.log
 .DS_Store
 .idea
 yarn.lock
+package-lock.json

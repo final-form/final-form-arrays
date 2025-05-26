@@ -1,8 +1,8 @@
-import resolve from 'rollup-plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
-import commonjs from 'rollup-plugin-commonjs'
-import { uglify } from 'rollup-plugin-uglify'
-import replace from 'rollup-plugin-replace'
+import commonjs from '@rollup/plugin-commonjs'
+import terser from '@rollup/plugin-terser'
+import replace from '@rollup/plugin-replace'
 import ts from 'typescript'
 
 const minify = process.env.MINIFY
@@ -66,6 +66,6 @@ export default {
           )
         })
       : null,
-    minify ? uglify() : null
+    minify ? terser() : null
   ].filter(Boolean)
 }
