@@ -1,5 +1,4 @@
-// @flow
-import type { MutableState, Mutator, Tools } from 'final-form'
+import { MutableState, Mutator, Tools } from 'final-form'
 import copyField from './copyField'
 import { escapeRegexTokens } from './utils'
 
@@ -7,9 +6,9 @@ const remove: Mutator<any> = (
   [name, index]: any[],
   state: MutableState<any>,
   { changeValue, getIn, setIn }: Tools<any>
-) => {
-  let returnValue
-  changeValue(state, name, (array: ?(any[])): ?(any[]) => {
+): any => {
+  let returnValue: any
+  changeValue(state, name, (array?: any[]): any[] | undefined => {
     if (!array) {
       return array
     }
@@ -25,7 +24,7 @@ const remove: Mutator<any> = (
   // now we have to remove any subfields for our index,
   // and decrement all higher indexes.
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
-  const newFields = {}
+  const newFields: { [key: string]: any } = {}
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
@@ -39,7 +38,7 @@ const remove: Mutator<any> = (
           // if has submitErrors for array
           if (Array.isArray(submitErrors)) {
             submitErrors.splice(index, 1)
-            state = setIn(state, path, submitErrors)
+            setIn(state, path, submitErrors)
           }
         }
 
@@ -63,4 +62,4 @@ const remove: Mutator<any> = (
   return returnValue
 }
 
-export default remove
+export default remove 

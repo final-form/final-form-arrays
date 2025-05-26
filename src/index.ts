@@ -1,16 +1,15 @@
 import { Mutator } from 'final-form'
-
-export const insert: Mutator
-export const concat: Mutator
-export const move: Mutator
-export const pop: Mutator
-export const push: Mutator
-export const removeBatch: Mutator
-export const remove: Mutator
-export const shift: Mutator
-export const swap: Mutator
-export const update: Mutator
-export const unshift: Mutator
+import insert from './insert'
+import concat from './concat'
+import move from './move'
+import pop from './pop'
+import push from './push'
+import remove from './remove'
+import removeBatch from './removeBatch'
+import shift from './shift'
+import swap from './swap'
+import unshift from './unshift'
+import update from './update'
 
 export interface DefaultType<FormValues = any> {
   insert: Mutator<FormValues>
@@ -26,8 +25,36 @@ export interface DefaultType<FormValues = any> {
   unshift: Mutator<FormValues>
 }
 
-declare const d: DefaultType
-export default d
+const mutators: DefaultType = {
+  insert,
+  concat,
+  move,
+  pop,
+  push,
+  remove,
+  removeBatch,
+  shift,
+  swap,
+  unshift,
+  update
+}
+
+export default mutators
+
+// Export individual mutators
+export {
+  insert,
+  concat,
+  move,
+  pop,
+  push,
+  remove,
+  removeBatch,
+  shift,
+  swap,
+  unshift,
+  update
+}
 
 /** The shape of the mutators once final-form has bound them to state */
 export interface Mutators {
@@ -42,4 +69,4 @@ export interface Mutators {
   swap: (name: string, indexA: number, indexB: number) => void
   update: (name: string, index: number, value: any) => void
   unshift: (name: string, value: any) => void
-}
+} 

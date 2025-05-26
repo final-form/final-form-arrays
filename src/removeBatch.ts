@@ -1,5 +1,4 @@
-// @flow
-import type { MutableState, Mutator, Tools } from 'final-form'
+import { MutableState, Mutator, Tools } from 'final-form'
 import copyField from './copyField'
 import { escapeRegexTokens } from './utils'
 
@@ -29,7 +28,7 @@ const removeBatch: Mutator<any> = (
   [name, indexes]: any[],
   state: MutableState<any>,
   { changeValue }: Tools<any>
-) => {
+): any[] => {
   if (indexes.length === 0) {
     return []
   }
@@ -44,10 +43,10 @@ const removeBatch: Mutator<any> = (
     }
   }
 
-  let returnValue = []
-  changeValue(state, name, (array: ?(any[])): ?(any[]) => {
+  let returnValue: any[] = []
+  changeValue(state, name, (array?: any[]): any[] | undefined => {
     // use original order of indexes for return value
-    returnValue = indexes.map(index => array && array[index])
+    returnValue = indexes.map((index: number) => array && array[index])
 
     if (!array) {
       return array
@@ -67,7 +66,7 @@ const removeBatch: Mutator<any> = (
   // now we have to remove any subfields for our indexes,
   // and decrement all higher indexes.
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
-  const newFields = {}
+  const newFields: { [key: string]: any } = {}
   Object.keys(state.fields).forEach(key => {
     const tokens = pattern.exec(key)
     if (tokens) {
@@ -80,9 +79,8 @@ const removeBatch: Mutator<any> = (
 
       if (fieldIndex > sortedIndexes[0]) {
         // Shift all higher indices down
-        const decrementedKey = `${name}[${fieldIndex - ~indexOfFieldIndex}]${
-          tokens[2]
-        }`
+        const decrementedKey = `${name}[${fieldIndex - ~indexOfFieldIndex}]${tokens[2]
+          }`
         copyField(state.fields, key, newFields, decrementedKey)
         return
       }
@@ -97,4 +95,4 @@ const removeBatch: Mutator<any> = (
   return returnValue
 }
 
-export default removeBatch
+export default removeBatch 

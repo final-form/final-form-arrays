@@ -1,53 +1,53 @@
 import removeBatch from './removeBatch'
-import { getIn, setIn } from 'final-form'
+import { getIn, setIn, MutableState, Tools } from 'final-form'
 
 describe('removeBatch', () => {
   const getOp = value => {
     const changeValue = jest.fn()
-    const state = {
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
           name: 'foo[0]',
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: false,
           error: 'Second Error'
-        }
+        } as any
       }
     }
-    removeBatch(['foo', value], state, { changeValue })
+    removeBatch(['foo', value], state, { changeValue } as unknown as Tools<any>)
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = jest.fn((state, name, mutate) => {
+    const changeValue = jest.fn((state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     })
-    function blur0() {}
-    function change0() {}
-    function focus0() {}
-    function blur1() {}
-    function change1() {}
-    function focus1() {}
-    function blur2() {}
-    function change2() {}
-    function focus2() {}
-    const state = {
+    function blur0() { }
+    function change0() { }
+    function focus0() { }
+    function blur1() { }
+    function change1() { }
+    function focus1() { }
+    function blur2() { }
+    function change2() { }
+    function focus2() { }
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two', 'three']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -57,7 +57,7 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           blur: blur1,
@@ -65,7 +65,7 @@ describe('removeBatch', () => {
           focus: focus1,
           touched: false,
           error: 'Second Error'
-        },
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           blur: blur2,
@@ -73,10 +73,10 @@ describe('removeBatch', () => {
           focus: focus2,
           touched: true,
           error: 'Third Error'
-        }
+        } as any
       }
     }
-    const result = removeBatch(['foo', [1, 2]], state, { changeValue })
+    const result = removeBatch(['foo', [1, 2]], state, { changeValue } as unknown as Tools<any>)
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['two', 'three'])
     expect(changeValue).toHaveBeenCalled()
@@ -88,7 +88,7 @@ describe('removeBatch', () => {
       formState: {
         values: {
           foo: ['one']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -106,25 +106,25 @@ describe('removeBatch', () => {
 
   it('should not matter if indexes are out of order', () => {
     // implementation of changeValue taken directly from Final Form
-    const changeValue = jest.fn((state, name, mutate) => {
+    const changeValue = jest.fn((state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
-      state.formState.values = setIn(state.formState.values, name, after) || {}
+      state.formState.values = setIn(state.formState.values, name, after) || {} as any
     })
-    function blur0() {}
-    function change0() {}
-    function focus0() {}
-    function blur1() {}
-    function change1() {}
-    function focus1() {}
-    function blur2() {}
-    function change2() {}
-    function focus2() {}
-    const state = {
+    function blur0() { }
+    function change0() { }
+    function focus0() { }
+    function blur1() { }
+    function change1() { }
+    function focus1() { }
+    function blur2() { }
+    function change2() { }
+    function focus2() { }
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: ['one', 'two', 'three']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -134,7 +134,7 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'First Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           blur: blur1,
@@ -142,7 +142,7 @@ describe('removeBatch', () => {
           focus: focus1,
           touched: false,
           error: 'Second Error'
-        },
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           blur: blur2,
@@ -150,10 +150,10 @@ describe('removeBatch', () => {
           focus: focus2,
           touched: true,
           error: 'Third Error'
-        }
+        } as any
       }
     }
-    const result = removeBatch(['foo', [2, 0]], state, { changeValue })
+    const result = removeBatch(['foo', [2, 0]], state, { changeValue } as unknown as Tools<any>)
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['three', 'one'])
     expect(changeValue).toHaveBeenCalled()
@@ -165,7 +165,7 @@ describe('removeBatch', () => {
       formState: {
         values: {
           foo: ['two']
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -189,14 +189,14 @@ describe('removeBatch', () => {
 
   it('should keep the original state if no indexes are specified to be removed', () => {
     const array = ['a', 'b', 'c', 'd', 'e']
-    function blur0() {}
-    function change0() {}
-    function focus0() {}
-    const state = {
+    function blur0() { }
+    function change0() { }
+    function focus0() { }
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: array
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -206,20 +206,18 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'A Error'
-        }
+        } as any
       }
     }
     const changeValue = jest.fn()
-    const returnValue = removeBatch(['foo[0]', []], state, {
-      changeValue
-    })
+    const returnValue = removeBatch(['foo[0]', []], state, { changeValue } as unknown as Tools<any>)
     expect(returnValue).toEqual([])
     expect(state.formState.values.foo).toBe(array) // no change
     expect(state).toEqual({
       formState: {
         values: {
           foo: array
-        }
+        } as any
       },
       fields: {
         'foo[0]': {
@@ -229,7 +227,7 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'A Error'
-        }
+        } as any
       }
     })
   })
@@ -251,32 +249,32 @@ describe('removeBatch', () => {
   it('should adjust higher indexes when removing', () => {
     const array = ['a', 'b', 'c', 'd', 'e']
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
     }
-    function blur0() {}
-    function blur1() {}
-    function blur2() {}
-    function blur3() {}
-    function blur4() {}
-    function change0() {}
-    function change1() {}
-    function change2() {}
-    function change3() {}
-    function change4() {}
-    function focus0() {}
-    function focus1() {}
-    function focus2() {}
-    function focus3() {}
-    function focus4() {}
-    const state = {
+    function blur0() { }
+    function blur1() { }
+    function blur2() { }
+    function blur3() { }
+    function blur4() { }
+    function change0() { }
+    function change1() { }
+    function change2() { }
+    function change3() { }
+    function change4() { }
+    function focus0() { }
+    function focus1() { }
+    function focus2() { }
+    function focus3() { }
+    function focus4() { }
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: array,
           anotherField: 42
-        }
+        } as any
       },
       fields: {
         'foo[4]': {
@@ -286,7 +284,7 @@ describe('removeBatch', () => {
           focus: focus4,
           touched: true,
           error: 'E Error'
-        },
+        } as any,
         'foo[0]': {
           name: 'foo[0]',
           blur: blur0,
@@ -294,7 +292,7 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'A Error'
-        },
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           blur: blur1,
@@ -302,7 +300,7 @@ describe('removeBatch', () => {
           focus: focus1,
           touched: false,
           error: 'B Error'
-        },
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           blur: blur2,
@@ -310,7 +308,7 @@ describe('removeBatch', () => {
           focus: focus2,
           touched: true,
           error: 'C Error'
-        },
+        } as any,
         'foo[3]': {
           name: 'foo[3]',
           blur: blur3,
@@ -318,14 +316,14 @@ describe('removeBatch', () => {
           focus: focus3,
           touched: false,
           error: 'D Error'
-        },
+        } as any,
         anotherField: {
           name: 'anotherField',
           touched: false
         }
       }
     }
-    const returnValue = removeBatch(['foo', [1, 3]], state, { changeValue })
+    const returnValue = removeBatch(['foo', [1, 3]], state, { changeValue } as unknown as Tools<any>)
     expect(returnValue).toEqual(['b', 'd'])
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -333,7 +331,7 @@ describe('removeBatch', () => {
         values: {
           foo: ['a', 'c', 'e'],
           anotherField: 42
-        }
+        } as any
       },
       fields: {
         'foo[2]': {
@@ -374,32 +372,32 @@ describe('removeBatch', () => {
   it('should adjust higher indexes when removing (nested arrays)', () => {
     const array = ['a', 'b', 'c', 'd', 'e']
     // implementation of changeValue taken directly from Final Form
-    const changeValue = (state, name, mutate) => {
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
       const before = getIn(state.formState.values, name)
       const after = mutate(before)
       state.formState.values = setIn(state.formState.values, name, after) || {}
     }
-    function blur0() {}
-    function blur1() {}
-    function blur2() {}
-    function blur3() {}
-    function blur4() {}
-    function change0() {}
-    function change1() {}
-    function change2() {}
-    function change3() {}
-    function change4() {}
-    function focus0() {}
-    function focus1() {}
-    function focus2() {}
-    function focus3() {}
-    function focus4() {}
-    const state = {
+    function blur0() { }
+    function blur1() { }
+    function blur2() { }
+    function blur3() { }
+    function blur4() { }
+    function change0() { }
+    function change1() { }
+    function change2() { }
+    function change3() { }
+    function change4() { }
+    function focus0() { }
+    function focus1() { }
+    function focus2() { }
+    function focus3() { }
+    function focus4() { }
+    const state: MutableState<any> = {
       formState: {
         values: {
           foo: [array],
           anotherField: 42
-        }
+        } as any
       },
       fields: {
         'foo[0][4]': {
@@ -409,7 +407,7 @@ describe('removeBatch', () => {
           focus: focus4,
           touched: true,
           error: 'E Error'
-        },
+        } as any,
         'foo[0][0]': {
           name: 'foo[0][0]',
           blur: blur0,
@@ -417,7 +415,7 @@ describe('removeBatch', () => {
           focus: focus0,
           touched: true,
           error: 'A Error'
-        },
+        } as any,
         'foo[0][1]': {
           name: 'foo[0][1]',
           blur: blur1,
@@ -425,7 +423,7 @@ describe('removeBatch', () => {
           focus: focus1,
           touched: false,
           error: 'B Error'
-        },
+        } as any,
         'foo[0][2]': {
           name: 'foo[0][2]',
           blur: blur2,
@@ -433,7 +431,7 @@ describe('removeBatch', () => {
           focus: focus2,
           touched: true,
           error: 'C Error'
-        },
+        } as any,
         'foo[0][3]': {
           name: 'foo[0][3]',
           blur: blur3,
@@ -441,16 +439,14 @@ describe('removeBatch', () => {
           focus: focus3,
           touched: false,
           error: 'D Error'
-        },
+        } as any,
         anotherField: {
           name: 'anotherField',
           touched: false
         }
       }
     }
-    const returnValue = removeBatch(['foo[0]', [1, 3]], state, {
-      changeValue
-    })
+    const returnValue = removeBatch(['foo[0]', [1, 3]], state, { changeValue } as unknown as Tools<any>)
     expect(returnValue).toEqual(['b', 'd'])
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -458,7 +454,7 @@ describe('removeBatch', () => {
         values: {
           foo: [['a', 'c', 'e']],
           anotherField: 42
-        }
+        } as any
       },
       fields: {
         'foo[0][2]': {
@@ -494,5 +490,11 @@ describe('removeBatch', () => {
         }
       }
     })
+  })
+
+  it('should return undefined when removing all elements', () => {
+    const op = getOp([0, 1])
+    const result = op(['a', 'b'])
+    expect(result).toBeUndefined()
   })
 })

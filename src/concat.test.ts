@@ -1,16 +1,30 @@
 import concat from './concat'
+import { MutableState, Tools } from 'final-form'
 
 describe('concat', () => {
-  const getOp = value => {
+  const getOp = (value: any) => {
     const changeValue = jest.fn()
-    concat(['foo', value], {}, { changeValue })
+    const mockState: MutableState<any> = {
+      fieldSubscribers: {},
+      fields: {},
+      formState: {
+        values: {}
+      }
+    } as any
+    concat(['foo', value], mockState, { changeValue } as unknown as Tools<any>)
     return changeValue.mock.calls[0][2]
   }
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state = {}
-    const result = concat(['foo', ['bar', 'baz']], state, { changeValue })
+    const state: MutableState<any> = {
+      fieldSubscribers: {},
+      fields: {},
+      formState: {
+        values: {}
+      }
+    } as any
+    const result = concat(['foo', ['bar', 'baz']], state, { changeValue } as unknown as Tools<any>)
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -32,4 +46,4 @@ describe('concat', () => {
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['a', 'b', 'c', 'd', 'e'])
   })
-})
+}) 

@@ -1,12 +1,9 @@
-// @flow
-import type { InternalFieldState } from 'final-form/dist/types'
-
 function copyField(
-  oldFields: { [string]: InternalFieldState },
+  oldFields: { [key: string]: any },
   oldKey: string,
-  newFields: { [string]: InternalFieldState },
+  newFields: { [key: string]: any },
   newKey: string
-) {
+): void {
   newFields[newKey] = {
     ...oldFields[oldKey],
     name: newKey,
@@ -32,4 +29,4 @@ function copyField(
   }
 }
 
-export default copyField
+export default copyField 

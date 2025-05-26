@@ -1,9 +1,10 @@
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
-import flow from 'rollup-plugin-flow'
+import typescript from 'rollup-plugin-typescript2'
 import commonjs from 'rollup-plugin-commonjs'
 import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
+import ts from 'typescript'
 
 const minify = process.env.MINIFY
 const format = process.env.FORMAT
@@ -33,7 +34,7 @@ if (es) {
 }
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: Object.assign(
     {
       name: 'final-form-arrays',
@@ -43,8 +44,21 @@ export default {
   ),
   external: [],
   plugins: [
-    resolve({ jsnext: true, main: true }),
-    flow(),
+    resolve({
+      mainFields: ['module', 'jsnext:main', 'main'],
+      browser: true,
+      preferBuiltins: false
+    }),
+    typescript({
+      typescript: ts,
+      clean: true,
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: false,
+          declarationMap: false
+        }
+      }
+    }),
     commonjs({ include: 'node_modules/**' }),
     babel({
       exclude: 'node_modules/**',
@@ -57,12 +71,10 @@ export default {
             modules: false,
             loose: true
           }
-        ],
-        '@babel/preset-flow'
+        ]
       ],
       plugins: [
         ['@babel/plugin-transform-runtime', { useESModules: !cjs }],
-        '@babel/plugin-transform-flow-strip-types',
         '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-syntax-import-meta',
         '@babel/plugin-proposal-class-properties',

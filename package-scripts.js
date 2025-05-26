@@ -34,7 +34,7 @@ module.exports = {
         )
       ),
       es: {
-        description: 'run the build with rollup (uses rollup.config.js)',
+        description: 'run the build with rollup (uses rollup.config.mjs)',
         script: 'rollup --config --environment FORMAT:es'
       },
       cjs: {
@@ -57,37 +57,19 @@ module.exports = {
       description: 'Generates table of contents in README',
       script: 'doctoc README.md'
     },
-    copyTypes: series(
-      npsUtils.copy('src/*.js.flow src/*.d.ts dist'),
-      npsUtils.copy(
-        'dist/index.js.flow dist --rename="final-form-arrays.cjs.js.flow"'
-      ),
-      npsUtils.copy(
-        'dist/index.js.flow dist --rename="final-form-arrays.es.js.flow"'
-      )
-    ),
+    copyTypes: series('tsc --declaration --emitDeclarationOnly --outDir dist'),
     lint: {
       description: 'lint the entire project',
       script: 'eslint .'
     },
-    flow: {
-      description: 'flow check the entire project',
-      script: 'flow check'
-    },
     typescript: {
       description: 'typescript check the entire project',
-      script: 'tsc'
+      script: 'tsc --noEmit'
     },
     validate: {
       description:
         'This runs several scripts to make sure things look good before committing or on clean install',
-      default: concurrent.nps(
-        'lint',
-        'flow',
-        'typescript',
-        'build.andTest',
-        'test'
-      )
+      default: concurrent.nps('lint', 'typescript', 'build.andTest', 'test')
     }
   },
   options: {
