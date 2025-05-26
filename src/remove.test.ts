@@ -1,5 +1,6 @@
 import remove from './remove'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('remove', () => {
   it('should call changeValue once', () => {
@@ -23,7 +24,7 @@ describe('remove', () => {
         } as any
       }
     }
-    const result = remove(['foo', 0], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const result = remove(['foo', 0], state, createMockTools({ changeValue, getIn, setIn }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -42,7 +43,7 @@ describe('remove', () => {
       },
       fields: {}
     } as any
-    const returnValue = remove(['foo', 1], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const returnValue = remove(['foo', 1], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -59,7 +60,7 @@ describe('remove', () => {
       },
       fields: {}
     } as any
-    remove(['foo', 0], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    remove(['foo', 0], state, createMockTools({ changeValue, getIn, setIn }))
     const op = changeValue.mock.calls[0][2]
     const result = op(['only'])
     expect(result).toBeUndefined()
@@ -131,7 +132,7 @@ describe('remove', () => {
         }
       }
     }
-    const returnValue = remove(['foo', 1], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const returnValue = remove(['foo', 1], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBe('b')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -242,11 +243,11 @@ describe('remove', () => {
         }
       }
     }
-    const returnValue = remove(['foo[0]', 1], state, {
+    const returnValue = remove(['foo[0]', 1], state, createMockTools({
       changeValue,
       getIn,
       setIn
-    } as unknown as Tools<any>)
+    }))
     expect(returnValue).toBe('b')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -358,12 +359,7 @@ describe('remove', () => {
       }
     } as any
 
-    const returnValue = remove(['foo', 0], state, {
-      renameField,
-      changeValue,
-      getIn,
-      setIn
-    } as unknown as Tools<any>)
+    const returnValue = remove(['foo', 0], state, createMockTools({ renameField, changeValue, getIn, setIn }))
     expect(returnValue).toBeUndefined()
     expect(getIn(state, 'formState.submitErrors')).toEqual({ foo: [] })
   })
@@ -438,12 +434,7 @@ describe('remove', () => {
       }
     } as any
 
-    const returnValue = remove(['foo', 0], state, {
-      renameField,
-      changeValue,
-      getIn,
-      setIn
-    } as unknown as Tools<any>)
+    const returnValue = remove(['foo', 0], state, createMockTools({ renameField, changeValue, getIn, setIn }))
     expect(returnValue).toBeUndefined()
     expect(getIn(state, 'formState.submitErrors')).toEqual({
       foo: [{ key: 'B Submit Error' }]

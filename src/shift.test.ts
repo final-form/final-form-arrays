@@ -1,5 +1,6 @@
 import shift from './shift'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('shift', () => {
   it('should call changeValue once', () => {
@@ -23,7 +24,7 @@ describe('shift', () => {
         } as any
       }
     } as any
-    const result = shift(['foo'], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const result = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -42,7 +43,7 @@ describe('shift', () => {
       } as any,
       fields: {}
     } as any
-    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const returnValue = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBeUndefined()
     const op = changeValue.mock.calls[0][2]
     const result = op(undefined)
@@ -91,7 +92,7 @@ describe('shift', () => {
         } as any
       }
     } as any
-    const returnValue = shift(['foo'], state, { changeValue, getIn, setIn } as unknown as Tools<any>)
+    const returnValue = shift(['foo'], state, createMockTools({ changeValue, getIn, setIn }))
     expect(returnValue).toBe('a')
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({

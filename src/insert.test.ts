@@ -1,5 +1,6 @@
 import insert from './insert'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('insert', () => {
   const getOp = (index, value: any) => {
@@ -24,7 +25,7 @@ describe('insert', () => {
         } as any
       }
     }
-    insert(['foo', index, value], state, { changeValue, resetFieldState } as unknown as Tools<any>)
+    insert(['foo', index, value], state, createMockTools({ changeValue, resetFieldState }))
     return changeValue.mock.calls[0][2]
   }
 
@@ -54,10 +55,7 @@ describe('insert', () => {
         }
       }
     }
-    const result = insert(['foo', 0, 'bar'], state, {
-      changeValue,
-      resetFieldState
-    } as unknown as Tools<any>)
+    const result = insert(['foo', 0, 'bar'], state, createMockTools({ changeValue, resetFieldState }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -123,10 +121,7 @@ describe('insert', () => {
         } as any
       }
     }
-    const returnValue = insert(['foo', 1, 'NEWVALUE'], state, {
-      changeValue,
-      resetFieldState
-    } as unknown as Tools<any>)
+    const returnValue = insert(['foo', 1, 'NEWVALUE'], state, createMockTools({ changeValue, resetFieldState }))
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -216,10 +211,7 @@ describe('insert', () => {
         } as any
       }
     }
-    const returnValue = insert(['foo[0]', 1, 'NEWVALUE'], state, {
-      changeValue,
-      resetFieldState
-    } as unknown as Tools<any>)
+    const returnValue = insert(['foo[0]', 1, 'NEWVALUE'], state, createMockTools({ changeValue, resetFieldState }))
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({

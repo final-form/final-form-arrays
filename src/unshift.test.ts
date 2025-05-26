@@ -1,5 +1,6 @@
 import unshift from './unshift'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('unshift', () => {
   const getOp = (value: any) => {
@@ -24,7 +25,7 @@ describe('unshift', () => {
         } as any
       }
     } as any
-    unshift(['foo', value], state, { changeValue, resetFieldState } as unknown as Tools<any>)
+    unshift(['foo', value], state, createMockTools({ changeValue, resetFieldState }))
     return changeValue.mock.calls[0][2]
   }
 
@@ -50,10 +51,7 @@ describe('unshift', () => {
         } as any
       }
     } as any
-    const result = unshift(['foo', 'bar'], state, {
-      changeValue,
-      resetFieldState
-    } as unknown as Tools<any>)
+    const result = unshift(['foo', 'bar'], state, createMockTools({ changeValue, resetFieldState }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -105,10 +103,7 @@ describe('unshift', () => {
         } as any
       }
     } as any
-    const returnValue = unshift(['foo', 'NEWVALUE'], state, {
-      changeValue,
-      resetFieldState
-    } as unknown as Tools<any>)
+    const returnValue = unshift(['foo', 'NEWVALUE'], state, createMockTools({ changeValue, resetFieldState }))
     expect(returnValue).toBeUndefined()
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({

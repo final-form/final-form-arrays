@@ -1,5 +1,6 @@
 import update from './update'
-import { MutableState, Tools } from 'final-form'
+import { MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('update', () => {
   const getOp = (index: number, value: any) => {
@@ -11,7 +12,7 @@ describe('update', () => {
         values: {}
       }
     } as any
-    update(['foo', index, value], mockState, { changeValue } as unknown as Tools<any>)
+    update(['foo', index, value], mockState, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
@@ -24,7 +25,7 @@ describe('update', () => {
         values: {}
       }
     } as any
-    const result = update(['foo', 0, 'bar'], state, { changeValue } as unknown as Tools<any>)
+    const result = update(['foo', 0, 'bar'], state, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)

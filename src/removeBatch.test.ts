@@ -1,5 +1,6 @@
 import removeBatch from './removeBatch'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('removeBatch', () => {
   const getOp = value => {
@@ -23,7 +24,7 @@ describe('removeBatch', () => {
         } as any
       }
     }
-    removeBatch(['foo', value], state, { changeValue } as unknown as Tools<any>)
+    removeBatch(['foo', value], state, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
@@ -76,7 +77,7 @@ describe('removeBatch', () => {
         } as any
       }
     }
-    const result = removeBatch(['foo', [1, 2]], state, { changeValue } as unknown as Tools<any>)
+    const result = removeBatch(['foo', [1, 2]], state, createMockTools({ changeValue }))
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['two', 'three'])
     expect(changeValue).toHaveBeenCalled()
@@ -153,7 +154,7 @@ describe('removeBatch', () => {
         } as any
       }
     }
-    const result = removeBatch(['foo', [2, 0]], state, { changeValue } as unknown as Tools<any>)
+    const result = removeBatch(['foo', [2, 0]], state, createMockTools({ changeValue }))
     expect(Array.isArray(result)).toBe(true)
     expect(result).toEqual(['three', 'one'])
     expect(changeValue).toHaveBeenCalled()
@@ -210,7 +211,7 @@ describe('removeBatch', () => {
       }
     }
     const changeValue = jest.fn()
-    const returnValue = removeBatch(['foo[0]', []], state, { changeValue } as unknown as Tools<any>)
+    const returnValue = removeBatch(['foo[0]', []], state, createMockTools({ changeValue }))
     expect(returnValue).toEqual([])
     expect(state.formState.values.foo).toBe(array) // no change
     expect(state).toEqual({
@@ -323,7 +324,7 @@ describe('removeBatch', () => {
         }
       }
     }
-    const returnValue = removeBatch(['foo', [1, 3]], state, { changeValue } as unknown as Tools<any>)
+    const returnValue = removeBatch(['foo', [1, 3]], state, createMockTools({ changeValue }))
     expect(returnValue).toEqual(['b', 'd'])
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({
@@ -446,7 +447,7 @@ describe('removeBatch', () => {
         }
       }
     }
-    const returnValue = removeBatch(['foo[0]', [1, 3]], state, { changeValue } as unknown as Tools<any>)
+    const returnValue = removeBatch(['foo[0]', [1, 3]], state, createMockTools({ changeValue }))
     expect(returnValue).toEqual(['b', 'd'])
     expect(state.formState.values.foo).not.toBe(array) // copied
     expect(state).toEqual({

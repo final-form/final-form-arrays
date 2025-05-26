@@ -6,7 +6,7 @@ const pop: Mutator<any> = (
   state: MutableState<any>,
   tools: Tools<any>
 ): any => {
-  const { getIn } = tools
+  const { getIn } = tools;
   const array = getIn(state.formState.values, name)
   return array && array.length > 0
     ? remove([name, array.length - 1], state, tools)

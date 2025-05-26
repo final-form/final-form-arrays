@@ -1,24 +1,28 @@
 import move from './move'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('move', () => {
-  const getOp = (from, to: any) => {
+  const getOp = (from: any, to: any) => {
     const changeValue = jest.fn()
-    move(['foo', from, to], { fields: {} }, { changeValue } as unknown as Tools<any>)
+    const mockTools = createMockTools({ changeValue })
+    move(['foo', from, to], { fields: {} } as any, mockTools)
     return changeValue.mock.calls[0][2]
   }
 
   it('should do nothing if from and to are equal', () => {
     const changeValue = jest.fn()
-    const result = move(['foo', 1, 1], { fields: {} }, { changeValue } as unknown as Tools<any>)
+    const mockTools = createMockTools({ changeValue })
+    const result = move(['foo', 1, 1], { fields: {} } as any, mockTools)
     expect(result).toBeUndefined()
     expect(changeValue).not.toHaveBeenCalled()
   })
 
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
-    const state: MutableState<any> = { fields: {} }
-    const result = move(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    const state: MutableState<any> = { fields: {} } as any
+    const mockTools = createMockTools({ changeValue })
+    const result = move(['foo', 0, 2], state, mockTools)
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -85,7 +89,7 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
@@ -161,7 +165,7 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 2, 0], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 2, 0], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
@@ -258,7 +262,7 @@ describe('move', () => {
         } as any
       }
     }
-    move(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
@@ -379,7 +383,7 @@ describe('move', () => {
         } as any
       }
     }
-    move(['foo', 2, 0], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 2, 0], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
@@ -471,7 +475,7 @@ describe('move', () => {
         } as any
       }
     }
-    move(['foo', 0, 1], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 0, 1], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
@@ -510,8 +514,8 @@ describe('move', () => {
     const state: MutableState<any> = {
       formState: {
         values: {
-          foo: [{ dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} },
-            { dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} }]
+          foo: [{ dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red' }, { name: 'blue' }], deep: { inside: { rock: 'black' } } },
+          { dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' } } }]
         }
       },
       fields: {
@@ -557,12 +561,12 @@ describe('move', () => {
         } as any,
       }
     }
-    move(['foo', 0, 1], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 0, 1], state, createMockTools({ changeValue }))
     expect(state).toMatchObject({
       formState: {
         values: {
-          foo: [{ dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' }} },
-            { dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red'}, { name: 'blue'}], deep: { inside: { rock: 'black'}} }]
+          foo: [{ dog: 'banana dog', mouse: 'mickey', deep: { inside: { axe: 'golden' } } },
+          { dog: 'apple dog', cat: 'apple cat', colors: [{ name: 'red' }, { name: 'blue' }], deep: { inside: { rock: 'black' } } }]
         }
       },
       fields: {
@@ -660,7 +664,7 @@ describe('move', () => {
         }
       }
     }
-    move(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    move(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state.fields['foo[0]'].change()).toBe('foo[0]')
     expect(state.fields['foo[1]'].change()).toBe('foo[1]')
     expect(state.fields['foo[2]'].change()).toBe('foo[2]')

@@ -13,7 +13,7 @@ const insert: Mutator<any> = (
     return copy
   })
 
-  // now we have increment any higher indexes
+  // now increment any higher indices
   const pattern = new RegExp(`^${escapeRegexTokens(name)}\\[(\\d+)\\](.*)`)
   const newFields: { [key: string]: any } = {}
   Object.keys(state.fields).forEach(key => {

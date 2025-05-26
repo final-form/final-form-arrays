@@ -1,5 +1,6 @@
 import concat from './concat'
-import { MutableState, Tools } from 'final-form'
+import { MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('concat', () => {
   const getOp = (value: any) => {
@@ -11,7 +12,7 @@ describe('concat', () => {
         values: {}
       }
     } as any
-    concat(['foo', value], mockState, { changeValue } as unknown as Tools<any>)
+    concat(['foo', value], mockState, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
@@ -24,7 +25,7 @@ describe('concat', () => {
         values: {}
       }
     } as any
-    const result = concat(['foo', ['bar', 'baz']], state, { changeValue } as unknown as Tools<any>)
+    const result = concat(['foo', ['bar', 'baz']], state, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)

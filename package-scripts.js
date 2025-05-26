@@ -57,6 +57,10 @@ module.exports = {
       description: 'Generates table of contents in README',
       script: 'doctoc README.md'
     },
+    prettier: {
+      description: 'Runs prettier on everything',
+      script: 'prettier --write "**/*.([jt]s*)"'
+    },
     copyTypes: series('tsc --declaration --emitDeclarationOnly --outDir dist'),
     lint: {
       description: 'lint the entire project',

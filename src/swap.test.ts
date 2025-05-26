@@ -1,16 +1,17 @@
 import swap from './swap'
-import { getIn, setIn, MutableState, Tools } from 'final-form'
+import { getIn, setIn, MutableState } from 'final-form'
+import { createMockTools } from './testUtils'
 
 describe('swap', () => {
   const getOp = (from, to: any) => {
     const changeValue = jest.fn()
-    swap(['foo', from, to], { fields: {} }, { changeValue } as unknown as Tools<any>)
+    swap(['foo', from, to], { fields: {} }, createMockTools({ changeValue }))
     return changeValue.mock.calls[0][2]
   }
 
   it('should do nothing if indexA and indexB are equal', () => {
     const changeValue = jest.fn()
-    const result = swap(['foo', 1, 1], { fields: {} }, { changeValue } as unknown as Tools<any>)
+    const result = swap(['foo', 1, 1], { fields: {} }, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).not.toHaveBeenCalled()
   })
@@ -18,7 +19,7 @@ describe('swap', () => {
   it('should call changeValue once', () => {
     const changeValue = jest.fn()
     const state: MutableState<any> = { fields: {} }
-    const result = swap(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    const result = swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(result).toBeUndefined()
     expect(changeValue).toHaveBeenCalled()
     expect(changeValue).toHaveBeenCalledTimes(1)
@@ -85,7 +86,7 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
@@ -202,7 +203,7 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state).toEqual({
       formState: {
         values: {
@@ -323,7 +324,7 @@ describe('swap', () => {
         }
       }
     }
-    swap(['foo', 0, 2], state, { changeValue } as unknown as Tools<any>)
+    swap(['foo', 0, 2], state, createMockTools({ changeValue }))
     expect(state.fields['foo[0]'].change()).toBe('foo[0]')
     expect(state.fields['foo[1]'].change()).toBe('foo[1]')
     expect(state.fields['foo[2]'].change()).toBe('foo[2]')

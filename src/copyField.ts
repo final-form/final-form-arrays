@@ -1,7 +1,9 @@
+import { InternalFieldState } from 'final-form'
+
 function copyField(
-  oldFields: { [key: string]: any },
+  oldFields: { [key: string]: InternalFieldState<any> },
   oldKey: string,
-  newFields: { [key: string]: any },
+  newFields: { [key: string]: Partial<InternalFieldState<any>> },
   newKey: string
 ): void {
   newFields[newKey] = {
