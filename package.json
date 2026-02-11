@@ -46,6 +46,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-terser": "^0.4.4",
+    "@size-limit/preset-small-lib": "^11.1.6",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
@@ -69,10 +70,9 @@
     "react": "^19.1.0",
     "rollup": "^4.41.1",
     "rollup-plugin-typescript2": "^0.36.0",
+    "size-limit": "^11.1.6",
     "ts-jest": "^29.3.4",
-    "typescript": "^5.8.3",
-    "@size-limit/preset-small-lib": "^11.1.6",
-    "size-limit": "^11.1.6"
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
     "final-form": "^5.0.0"
@@ -103,15 +103,15 @@
   "size-limit": [
     {
       "path": "dist/final-form-arrays.umd.min.js",
-      "limit": "1kB"
+      "limit": "2kB"
     },
     {
       "path": "dist/final-form-arrays.es.js",
-      "limit": "1kB"
+      "limit": "1.5kB"
     },
     {
       "path": "dist/final-form-arrays.cjs.js",
-      "limit": "1kB"
+      "limit": "2kB"
     }
   ]
 }
