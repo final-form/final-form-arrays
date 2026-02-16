@@ -499,3 +499,30 @@ describe('removeBatch', () => {
     expect(result).toBeUndefined()
   })
 })
+
+describe('removeBatch - Issue #97', () => {
+  it('should correctly remove items when indices are double-digit and not pre-sorted', () => {
+    const form = makeForm()
+    const mutators = createArrayMutators()
+    const state = form.getState()
+
+    // Create array with 20 items
+    for (let i = 0; i < 20; i++) {
+      state.formState.values.foo = state.formState.values.foo || []
+      state.formState.values.foo.push({ id: i + 1 })
+    }
+
+    // Remove items at indices 4-16 (should keep items with id 1-4 and 17-20)
+    const indicesToRemove = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    
+    // Call removeBatch
+    mutators.removeBatch(['foo', indicesToRemove], state, form.getTools())
+
+    // Should have 7 items left (indices 0-3 and 17-19)
+    expect(state.formState.values.foo).toHaveLength(7)
+    expect(state.formState.values.foo.map((item: any) => item.id)).toEqual([
+      1, 2, 3, 4, // First 4 kept
+      17, 18, 19, 20 // Last 4 kept
+    ])
+  })
+})
