@@ -50,7 +50,7 @@ describe('remove', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should return undefined when removing last element from array', () => {
+  it('should return empty array when removing last element from array', () => {
     const changeValue = jest.fn()
     const state: MutableState<any> = {
       formState: {
@@ -63,7 +63,7 @@ describe('remove', () => {
     remove(['foo', 0], state, createMockTools({ changeValue, getIn, setIn }))
     const op = changeValue.mock.calls[0][2]
     const result = op(['only'])
-    expect(result).toBeUndefined()
+    expect(result).toEqual([])
   })
 
   it('should remove value from the specified index, and return it', () => {
