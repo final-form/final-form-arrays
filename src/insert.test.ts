@@ -149,6 +149,11 @@ describe('insert', () => {
           touched: true,
           error: 'A Error'
         } as any,
+        'foo[1]': {
+          name: 'foo[1]',
+          touched: false,
+          error: 'B Error'
+        } as any,
         'foo[2]': {
           name: 'foo[2]',
           touched: true,
@@ -225,6 +230,11 @@ describe('insert', () => {
           name: 'foo[0][0]',
           touched: true,
           error: 'A Error'
+        } as any,
+        'foo[0][1]': {
+          name: 'foo[0][1]',
+          touched: false,
+          error: 'B Error'
         } as any,
         'foo[0][2]': {
           name: 'foo[0][2]',
