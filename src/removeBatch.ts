@@ -34,7 +34,7 @@ const removeBatch: Mutator<any> = (
   }
 
   const sortedIndexes: number[] = [...indexes]
-  sortedIndexes.sort()
+  sortedIndexes.sort((a, b) => a - b) // Numeric sort, not lexicographic
 
   // Remove duplicates
   for (let i = sortedIndexes.length - 1; i > 0; i -= 1) {
