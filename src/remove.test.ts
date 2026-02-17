@@ -440,4 +440,58 @@ describe('remove', () => {
       foo: [{ key: 'B Submit Error' }]
     })
   })
+
+  it('should preserve data property of shifted fields after remove', () => {
+    // Reproduces: https://github.com/final-form/react-final-form-arrays/issues/165
+    // form.getFieldState is corrupted after arrays.remove - data is lost for shifted fields
+    const changeValue = (state: any, name: string, mutate: (value: any) => any) => {
+      const before = getIn(state.formState.values, name)
+      const after = mutate(before)
+      state.formState.values = setIn(state.formState.values, name, after) || {}
+    }
+
+    function blur0() { }
+    function change0() { }
+    function focus0() { }
+    function blur1() { }
+    function change1() { }
+    function focus1() { }
+
+    const state: MutableState<any> = {
+      formState: {
+        values: {
+          customers: ['a', 'b']
+        } as any
+      },
+      fields: {
+        'customers[0]': {
+          name: 'customers[0]',
+          blur: blur0,
+          change: change0,
+          focus: focus0,
+          touched: false,
+          data: { disabled: true }
+        } as any,
+        'customers[1]': {
+          name: 'customers[1]',
+          blur: blur1,
+          change: change1,
+          focus: focus1,
+          touched: false,
+          data: { disabled: true }
+        } as any
+      }
+    }
+
+    // Remove element at index 0 — customers[1] should shift to customers[0]
+    remove(['customers', 0], state, createMockTools({ changeValue, getIn, setIn }))
+
+    // The field that was customers[1] is now customers[0]
+    // Its data property must be preserved
+    expect(state.fields['customers[0]']).toBeDefined()
+    expect(state.fields['customers[0]'].data).toEqual({ disabled: true })
+
+    // The stale customers[1] entry must be cleaned up
+    expect(state.fields['customers[1]']).toBeUndefined()
+  })
 })
