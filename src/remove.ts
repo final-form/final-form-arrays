@@ -16,9 +16,7 @@ const remove: Mutator<any> = (
     const copy = [...array]
     returnValue = copy[index]
     copy.splice(index, 1)
-    return copy.length > 0
-      ? copy
-      : undefined
+    return copy // Return empty array instead of undefined
   })
 
   // now we have to remove any subfields for our index,

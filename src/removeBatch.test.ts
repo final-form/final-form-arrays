@@ -493,9 +493,9 @@ describe('removeBatch', () => {
     })
   })
 
-  it('should return undefined when removing all elements', () => {
+  it('should return empty array when removing all elements', () => {
     const op = getOp([0, 1])
     const result = op(['a', 'b'])
-    expect(result).toBeUndefined()
+    expect(result).toEqual([])
   })
 })
