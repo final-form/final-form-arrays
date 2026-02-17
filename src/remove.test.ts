@@ -490,5 +490,8 @@ describe('remove', () => {
     // Its data property must be preserved
     expect(state.fields['customers[0]']).toBeDefined()
     expect(state.fields['customers[0]'].data).toEqual({ disabled: true })
+
+    // The stale customers[1] entry must be cleaned up
+    expect(state.fields['customers[1]']).toBeUndefined()
   })
 })
