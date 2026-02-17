@@ -113,6 +113,11 @@ describe('unshift', () => {
         }
       },
       fields: {
+        'foo[0]': {
+          name: 'foo[0]',
+          touched: false,
+          error: 'A Error'
+        } as any,
         'foo[1]': {
           name: 'foo[1]',
           touched: true,
