@@ -62,7 +62,9 @@ describe('remove after move regression #49', () => {
     expect(state.fields['customers[0]']).toBeDefined()
     expect(state.fields['customers[0]'].value).toEqual({ id: 2, name: 'Customer #2' })
     expect(state.fields['customers[0].id']).toBeDefined()
+    expect(state.fields['customers[0].id'].value).toBe(2)
     expect(state.fields['customers[0].name']).toBeDefined()
+    expect(state.fields['customers[0].name'].value).toBe('Customer #2')
 
     // Fields for index 1 should be gone
     expect(state.fields['customers[1]']).toBeUndefined()
